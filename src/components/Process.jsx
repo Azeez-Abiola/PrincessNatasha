@@ -5,54 +5,59 @@ import 'aos/dist/aos.css';
 export default function ProcessSection() {
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Animation duration
-      once: false, // Animation will happen every time the element comes into view
+      duration: 1000,
+      once: false,
     });
   }, []);
 
   return (
-    <section className="container mx-auto px-4 py-12">
-      <h2
-        className="text-[32px] md:text-[41px] font-['Radley'] italic mb-8 text-center text-[#9b4819]"
-        data-aos="fade-right"
-      >
-        Decision Time
-      </h2>
-      
-      <div className="flex flex-col md:flex-row gap-8 items-center">
-        <div className="w-full md:w-1/2" data-aos="fade-up">
-          <p className="text-black font-['Carlito'] mb-6 text-xl md:text-2xl text-center italic font-medium bg-gradient-to-r from-[#9b4819] to-[#b83330] bg-clip-text text-transparent transform hover:scale-105 transition-all duration-300">
-            Okay, here's how it works...
-          </p>
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="rounded-lg w-full h-auto"
-          >
-            <source src="/chart.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <p className="text-black font-['Carlito'] text-lg md:text-[24.5px] mt-4 md:mt-[-3rem] w-full md:w-[480px] mx-auto md:ml-12">
-            This is where you decide whether you want results or you want your content to keep wallowing away on the 5th page of the SERPs.
-          </p>
-          <button className="mt-6 bg-[#b83330] text-white px-8 md:px-14 py-3 rounded-md hover:bg-red-70 mx-auto md:float-right md:mr-[-24px]">
-            I Want Results!
-          </button>
-        </div>
+    <section className="w-full bg-[#44BBA4] py-16 px-4 rounded-t-[50px]">
+      <div className="container mx-auto max-w-3xl">
+        <h2
+          className="text-[32px] md:text-[41px] font-['Radley'] italic mb-8 text-center text-white"
+          data-aos="fade-down"
+        >
+          Decision Time
+        </h2>
         
-        <div className="w-full md:w-1/2" data-aos="fade-left">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="rounded-lg w-full md:w-3/4 h-[300px] md:h-[500px] mx-auto object-cover mb-12 md:mb-24"
-          >
-            <source src="/Decision.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+        <div 
+          className="bg-white rounded-xl p-8 shadow-lg"
+          data-aos="fade-up"
+        >
+          <div className="space-y-4">
+            {[
+              "You want quality SEO content on autopilot while you manage other business facets",
+              'You want your audience to scream "aha!" when they read your content',
+              "You want to build authority with memorable content across your channels",
+              "You want to maximize your content marketing budget",
+              "You want content that ranks AND converts",
+              "You're tired of hiring freelance content marketers who just don't get it"
+            ].map((text, index) => (
+              <div 
+                key={index} 
+                className="flex items-center gap-3 p-2 rounded-lg transition-all duration-300 hover:bg-gray-50 hover:shadow-md hover:translate-x-2 cursor-pointer group"
+              >
+                <div className="bg-[#44BBA4] text-white w-6 h-6 rounded flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
+                  <svg 
+                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-800 font-['Carlito'] text-lg transition-colors duration-300 group-hover:text-[#44BBA4]">
+                  {text}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

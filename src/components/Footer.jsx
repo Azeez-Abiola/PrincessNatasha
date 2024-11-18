@@ -1,40 +1,59 @@
-import { Mail, Phone } from 'lucide-react'
+import { Mail, Phone } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#9b4819] text-white px-6 md:px-12 py-12">
+    <footer className="w-full bg-[#44BBA4] text-white px-6 md:px-12 py-12">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start">
-          <h2 className="text-[22.9px] font-['Radley',serif] mb-8 md:mb-0">
-            Quick Links
-          </h2>
-          
           <div className="flex flex-col space-y-4">
-            <div className="flex items-center justify-start md:justify-end space-x-2">
-              <Phone className="w-5 h-5" />
-              <span>(123) 456 7890</span>
+            <img src="./logo.png" alt="Logo" className="w-28 h-28" />
+          </div>
+          <div className="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-16">
+            <div>
+              <h2 className="font-bold mb-4">Services</h2>
+              <ul className="space-y-2">
+                <li>Content Strategy</li>
+                <li>Content Writing</li>
+                <li>Copywriting</li>
+              </ul>
             </div>
-            <div className="flex items-center justify-start md:justify-end space-x-2">
-              <Mail className="w-5 h-5" />
-              <span>hello@reallygreatsite.com</span>
+            <div>
+              <h2 className="font-bold mb-4">Quick Links</h2>
+              <ul className="space-y-2">
+                <li>Contact Me</li>
+                <li>About Me</li>
+                <li>Portfolio</li>
+                <li>Blog</li>
+              </ul>
+            </div>
+            <div>
+              <h2 className="font-bold mb-4">Social</h2>
+              <ul className="space-y-2">
+                <li>LinkedIn</li>
+                <li>Instagram</li>
+                <li>Twitter</li>
+                <li>Pinterest</li>
+              </ul>
+            </div>
+            <div>
+              <h2 className="font-bold mb-4">Resources</h2>
+              <ul className="space-y-2">
+                <li>SEO Resources</li>
+                <li>Strategy Resources</li>
+                <li>Freelancing Resources</li>
+              </ul>
             </div>
           </div>
         </div>
-        
-        <div className="mt-8">
-          <div className="flex justify-center md:justify-start items-center space-x-4">
-            <a href="https://www.instagram.com" className="hover:opacity-80 transition-opacity">
-              <img src="/facebook-icon.png" alt="Instagram" className="w-6 h-6" />
-            </a>
-            <a href="https://www.facebook.com" className="hover:opacity-80 transition-opacity">
-              <img src="/instagram-icon.png" alt="Facebook" className="w-6 h-6" />
-            </a>
-            <a href="https://www.twitter.com" className="hover:opacity-80 transition-opacity">
-              <img src="/twitter icon.png" alt="Twitter" className="w-6 h-6" />
-            </a>
+
+        <div className="mt-8 border-t border-white pt-4 flex flex-col md:flex-row justify-between items-center">
+          <span>© 2024, Princess Natasha Momoh. All Rights Reserved.</span>
+          <div className="flex space-x-4">
+            <a href="#" className="hover:underline">Privacy Policy</a>
+            <a href="#" className="hover:underline">Terms and Conditions</a>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

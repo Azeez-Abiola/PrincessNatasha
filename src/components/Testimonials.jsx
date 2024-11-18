@@ -16,6 +16,10 @@ export default function TestimonialsSection() {
       {
         text: "Working with Natasha has transformed our content strategy. Her insights and writing style have helped us reach new audiences effectively.",
         author: "Sarah Johnson, CEO TechStart"
+      },
+      {
+        text: "Natasha's creativity and dedication have been a game-changer for our marketing efforts. Her ability to craft compelling narratives is unmatched.",
+        author: "Michael Lee, Marketing Head InnovateX"
       }
     ];
 
@@ -34,21 +38,21 @@ export default function TestimonialsSection() {
     };
   
     return (
-      <section className="w-full md:w-3/4 mx-auto px-6 md:px-12 py-16">
-        <h2 className="text-[32px] md:text-[41px] font-['Radley'] italic mb-12 text-center text-[#9b4819]">
+      <section className="w-full md:w-3/4 mx-auto px-6 md:px-12 py-20">
+        <h2 className="text-[32px] md:text-[41px] font-['Radley'] italic mb-12 text-center text-[#44BBA4]">
           The People Said it, Not Me!
         </h2>
         <div className="relative">
           <button 
             onClick={prevSlide}
-            className="absolute left-2 md:left-[-40px] top-1/2 transform -translate-y-1/2 bg-[#b83330] text-white p-2 rounded-full z-20 hover:bg-[#a12d2a]"
+            className="absolute left-2 md:left-[-40px] top-1/2 transform -translate-y-1/2 bg-[#44BBA4] text-white p-3 rounded-full z-20 hover:bg-[#a12d2a] shadow-lg transition-transform duration-300 hover:scale-110"
           >
             ←
           </button>
           <div className="overflow-hidden">
             <div 
-              className="flex transition-transform duration-300 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * (100 / testimonials.length)}%)` }}
             >
               {testimonials.map((testimonial, index) => (
                 <div 
@@ -56,10 +60,10 @@ export default function TestimonialsSection() {
                   className="flex-shrink-0 w-full md:w-1/3 px-4"
                 >
                   <div 
-                    className="bg-[#b83330] text-white p-6 rounded-lg min-h-[300px] transform transition-all duration-300 ease-in-out hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] flex flex-col justify-between"
+                    className="bg-white text-[#44BBA4] p-8 rounded-lg h-[400px] transform transition-all duration-300 ease-in-out hover:scale-105 shadow-lg hover:shadow-2xl flex flex-col justify-between border border-gray-300"
                   >
-                    <p className="mb-4">{testimonial.text}</p>
-                    <p className="font-semibold">{testimonial.author}</p>
+                    <p className="mb-4 italic">{testimonial.text}</p>
+                    <p className="font-semibold text-right">{testimonial.author}</p>
                   </div>
                 </div>
               ))}
@@ -67,7 +71,7 @@ export default function TestimonialsSection() {
           </div>
           <button 
             onClick={nextSlide}
-            className="absolute right-2 md:right-[-40px] top-1/2 transform -translate-y-1/2 bg-[#b83330] text-white p-2 rounded-full z-20 hover:bg-[#a12d2a]"
+            className="absolute right-2 md:right-[-40px] top-1/2 transform -translate-y-1/2 bg-[#44BBA4] text-white p-3 rounded-full z-20 hover:bg-[#a12d2a] shadow-lg transition-transform duration-300 hover:scale-110"
           >
             →
           </button>
