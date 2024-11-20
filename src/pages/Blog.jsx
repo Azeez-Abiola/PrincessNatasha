@@ -1,4 +1,7 @@
 import {useState} from 'react';
+import {toast} from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { FaSun, FaMoon, FaBars } from 'react-icons/fa';
@@ -77,6 +80,7 @@ function Blog(){
     <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here.." className={theme ? 'h-48 text-black rounded border-0 p-3 bg-gray-100 w-full mt-5' : 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5 h-48'} required></textarea>
     <button className={theme ? 'rounded text-lg mx-auto rounded px-3 py-2 text-center block w-full mt-3 text-white bg-[#44BBA4]' : 'rounded text-lg mx-auto rounded px-3 py-2 block mt-3 w-full text-center text-black bg-[#44BBA4]'} type="submit">Send Message</button>
     </form>
+       <ToastContainer />
        </div>
      {/* Toggle Button */}
       <div
