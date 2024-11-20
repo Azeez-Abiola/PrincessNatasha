@@ -40,4 +40,4 @@ transporter.sendMail(mailOptions, function(error, info){
 });
 })
 
-export default serverless(app)
+app.listen(process.env.PORT, () => console.log('Server is Running');
