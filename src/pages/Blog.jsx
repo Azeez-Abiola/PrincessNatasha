@@ -45,7 +45,7 @@ function Blog(){
         </div>
         
      <div className="p-6">
-      <h2 className="text-3xl text-center italic">Contact Us</h2>
+      <h2 className="text-3xl text-center italic">Contact Me</h2>
      <form onSubmit={ async (e) => {
        e.preventDefault()
        try{
@@ -72,10 +72,10 @@ function Blog(){
       alert('Failed to send message');
     }
   }}>
-    <input value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Your Name" className={theme ? 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5' : 'text-white rounded border-0 p-3 bg-gray-100 w-full mt-5'} required/><br />
-    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your Email" className={theme ? 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5' : 'text-white rounded border-0 p-3 bg-gray-100 w-full mt-5'} required/><br/>
-    <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here.." className={theme ? 'h-48 text-black rounded border-0 p-3 bg-gray-100 w-full mt-5' : 'text-white rounded border-0 p-3 bg-gray-100 w-full mt-5 h-48'} required></textarea>
-    <button className={theme ? 'rounded text-lg mx-auto rounded px-3 py-2 text-center block w-full mt-3 text-white bg-[#44BBA4]' : 'rounded text-lg mx-auto rounded px-3 py-2 block mt-3 w-full text-center text-white bg-[#44BBA4]'} type="submit">Send Message</button>
+    <input value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Your Name" className={theme ? 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5' : 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5'} required/><br />
+    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your Email" className={theme ? 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5' : 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5'} required/><br/>
+    <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here.." className={theme ? 'h-48 text-black rounded border-0 p-3 bg-gray-100 w-full mt-5' : 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5 h-48'} required></textarea>
+    <button className={theme ? 'rounded text-lg mx-auto rounded px-3 py-2 text-center block w-full mt-3 text-white bg-[#44BBA4]' : 'rounded text-lg mx-auto rounded px-3 py-2 block mt-3 w-full text-center text-black bg-[#44BBA4]'} type="submit">Send Message</button>
     </form>
        </div>
      {/* Toggle Button */}
