@@ -52,7 +52,7 @@ function Blog(){
      <form onSubmit={ async (e) => {
        e.preventDefault()
        try{
-         const response = await fetch('https://api-princess-natasha.vercel.app/send_mail', {
+         const response = await fetch('https://princess-natasha-g1y8.vercel.app/send_mail', {
          method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
@@ -69,10 +69,10 @@ function Blog(){
       }
 
      const result = await response.json();
-      alert('Message sent successfully!');
+     toast.success('Message was sent successfully!');
     } catch (error) {
       console.error(error);
-      alert('Failed to send message');
+      toast.error('Failed to send message');
     }
   }}>
     <input value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Your Name" className={theme ? 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5' : 'text-black rounded border-0 p-3 bg-gray-100 w-full mt-5'} required/><br />
