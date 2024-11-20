@@ -49,7 +49,7 @@ function Blog(){
      <form onSubmit={ async (e) => {
        e.preventDefault()
        try{
-         const response = await fetch('https://princess-natasha.vercel.app/send_mail', {
+         const response = await fetch('https://api-princess-natasha.vercel.app/send_mail', {
          method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
