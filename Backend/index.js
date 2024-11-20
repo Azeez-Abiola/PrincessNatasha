@@ -1,7 +1,6 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import cors from "cors";
-import serverless from "serverless-http";
 import dotenv from "dotenv";
 dotenv.config()
 const app = express();
