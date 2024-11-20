@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeContext';
@@ -11,6 +12,12 @@ import ServicesThreeSection from './components/ServicesThreeSection.jsx';
 // import WritingProcess from './components/WritingProcess.jsx';
 import Footer from './components/Footer';
 import AboutMe from './components/Aboutme'; // Update the import to AboutMe
+=======
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MainLayout from './pages/MainLayout';
+import Blog from './pages/Blog';
+>>>>>>> b705f772b892ca4e08fb496770ac79ca4f6cb1e5
 
 function App() {
   const servicesRef = useRef(null);
@@ -22,6 +29,7 @@ function App() {
   };
 
   return (
+<<<<<<< HEAD
     <Router>
       <div className="min-h-screen">
         <Navbar onScrollToServices={handleScrollToServices} />
@@ -42,13 +50,15 @@ function App() {
         <Footer />
       </div>
     </Router>
+=======
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainLayout />} />
+        <Route path="/blog" element={<Blog />} />
+      </Routes>
+    </BrowserRouter>
+>>>>>>> b705f772b892ca4e08fb496770ac79ca4f6cb1e5
   );
 }
 
-export default function WrappedApp() {
-  return (
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
-  );
-}
+export default App;

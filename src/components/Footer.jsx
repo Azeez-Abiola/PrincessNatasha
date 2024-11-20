@@ -23,8 +23,12 @@ export default function Footer() {
                 <li>Contact Me</li>
                 <li>About Me</li>
                 <li>Portfolio</li>
+<<<<<<< HEAD
                 <li>Blog</li>
                 <li>Services</li>
+=======
+                <li><a href="/blog">Blog</a></li>
+>>>>>>> b705f772b892ca4e08fb496770ac79ca4f6cb1e5
               </ul>
             </div>
             <div>
