@@ -40,4 +40,4 @@ transporter.sendMail(mailOptions, function(error, info){
 });
 })
 
-app.listen(process.env.PORT, () => console.log('Server is Running');
+app.listen(process.env.PORT, () => console.log('Server is Running'));
