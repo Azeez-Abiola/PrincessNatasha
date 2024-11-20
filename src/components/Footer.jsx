@@ -24,6 +24,7 @@ export default function Footer() {
                 <li>About Me</li>
                 <li>Portfolio</li>
                 <li>Blog</li>
+                <li>Services</li>
               </ul>
             </div>
             <div>

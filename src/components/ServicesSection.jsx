@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-export default function ServicesSection() {
+const ServicesSection = forwardRef((props, ref) => {
   useEffect(() => {
     AOS.init({
       duration: 1000, // Animation duration
@@ -11,7 +11,7 @@ export default function ServicesSection() {
   }, []);
 
   return (
-    <section className="w-full px-6 md:px-12 py-16 bg-[#F6F7EB] mt-32 shadow-lg rounded-lg">
+    <section ref={ref} className="w-full px-6 md:px-12 py-16 bg-[#F6F7EB] mt-32 shadow-lg rounded-lg">
       <div className="container mx-auto">
         <h2
           className="text-3xl md:text-5xl font-['Inter'] mb-8 text-center md:text-left"
@@ -86,11 +86,13 @@ export default function ServicesSection() {
 
         {/* Call to Action Button */}
         <div className="text-center mt-12" data-aos="fade-up">
-          <button className="bg-[#44BBA4] text-white px-8 py-2 rounded-md mx-auto block relative overflow-hidden transform hover:scale-105 transition-all duration-300 hover:bg-[#F6F7EB] hover:text-[#44BBA4] hover:border-[#44BBA4] hover:border">
+          <button className="bg-[#44BBA4] text-white px-8 py-2 rounded-md mx-auto block relative overflow-hidden transform hover:scale-105 transition-all duration-300 hover:bg-[#2e8b7a] hover:text-white hover:border-[#44BBA4] hover:border">
             <span className="relative z-10">I Want In!</span>
           </button>
         </div>
       </div>
     </section>
   );
-}
+});
+
+export default ServicesSection;
