@@ -12,36 +12,36 @@ export default function Footer() {
             <div>
               <h2 className="font-bold mb-4">Services</h2>
               <ul className="space-y-2">
-                <li>Content Strategy</li>
-                <li>Content Writing</li>
-                <li>Copywriting</li>
+                <li className="transition-transform transform hover:translate-x-2">Content Strategy</li>
+                <li className="transition-transform transform hover:translate-x-2">Content Writing</li>
+                <li className="transition-transform transform hover:translate-x-2">Copywriting</li>
               </ul>
             </div>
             <div>
               <h2 className="font-bold mb-4">Quick Links</h2>
               <ul className="space-y-2">
-                <li>Contact Me</li>
-                <li>About Me</li>
-                <li>Portfolio</li>
-                <li><a href="/blog">Blog</a></li>
-                <li>Services</li>
+                <li className="transition-transform transform hover:translate-x-2">Contact Me</li>
+                <li className="transition-transform transform hover:translate-x-2">About Me</li>
+                <li className="transition-transform transform hover:translate-x-2">Portfolio</li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="/blog">Blog</a></li>
+                <li className="transition-transform transform hover:translate-x-2">Services</li>
               </ul>
             </div>
             <div>
               <h2 className="font-bold mb-4">Social</h2>
               <ul className="space-y-2">
-                <li>LinkedIn</li>
-                <li>Instagram</li>
-                <li>Twitter</li>
-                <li>Pinterest</li>
+                <li className="transition-transform transform hover:translate-x-2">LinkedIn</li>
+                <li className="transition-transform transform hover:translate-x-2">Instagram</li>
+                <li className="transition-transform transform hover:translate-x-2">Twitter</li>
+                <li className="transition-transform transform hover:translate-x-2">Pinterest</li>
               </ul>
             </div>
             <div>
               <h2 className="font-bold mb-4">Resources</h2>
               <ul className="space-y-2">
-                <li>SEO Resources</li>
-                <li>Strategy Resources</li>
-                <li>Freelancing Resources</li>
+                <li className="transition-transform transform hover:translate-x-2">SEO Resources</li>
+                <li className="transition-transform transform hover:translate-x-2">Strategy Resources</li>
+                <li className="transition-transform transform hover:translate-x-2">Freelancing Resources</li>
               </ul>
             </div>
           </div>

@@ -16,12 +16,13 @@ export default function Navbar({ onScrollToServices }) {
           <Link
             key={index}
             to={
+              item === 'Home' ? '/' :
               item === 'About Me' ? '/about' :
-              item === 'Blog' ? '/blog' : // Update Blog link to route to /blog
+              item === 'Blog' ? '/blog' :
               `#${item.toLowerCase().replace(" ", "")}`
             }
             className="relative group"
-            onClick={item === 'Services' ? onScrollToServices : null} // Use prop for Services
+            onClick={item === 'Services' ? onScrollToServices : null}
           >
             <span>{item}</span>
             <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#44BBA4] transform scale-x-0 transition-transform group-hover:scale-x-100"></span>
@@ -55,19 +56,20 @@ export default function Navbar({ onScrollToServices }) {
             <Link
               key={index}
               to={
+                item === 'Home' ? '/' :
                 item === 'About Me' ? '/about' :
-                item === 'Blog' ? '/blog' : // Update Blog link to route to /blog
+                item === 'Blog' ? '/blog' :
                 `#${item.toLowerCase().replace(" ", "")}`
               }
               className="relative group"
-              onClick={item === 'Services' ? onScrollToServices : null} // Use prop for Services
+              onClick={() => setIsOpen(false)}
             >
               <span className="group-hover:text-[#9b4819]">{item}</span>
             </Link>
           ))}
           {/* Let's Work Button in Mobile Menu */}
           <Link to="/letswork" className="relative group">
-            <button className="bg-[#44BBA4] text-white px-8 md:px-12 py-2 rounded-md transition-transform duration-300 transform hover:scale-105 hover:bg-[#2e8b7a] text-base md:text-lg">
+            <button className="bg-[#44BBA4] text-white px-8 py-2 rounded-md transition-transform duration-300 transform hover:scale-105 hover:bg-[#2e8b7a] text-base">
               Work with me!
             </button>
           </Link>
