@@ -41,12 +41,16 @@ export default function HeroSection() {
     <section className="w-full overflow-x-hidden px-6 md:px-12 py-8 mt-32">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-center gap-12 lg:gap-24 xl:gap-32">
         <div className="w-full md:w-1/2 space-y-6 text-center animate-[slideInLeft_1s_ease-out]">
-          <h1 className="text-4xl md:text-5xl font-['Inter']">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-['Inter']">
             <div className="flex flex-col items-center justify-center gap-4 mb-16">
               <span className="italic text-5xl md:text-6xl text-[#44BBA4] font-['Inter']">B2B</span>
               <div className="inline-block" style={{ minWidth: `${maxWord.length}ch` }}>
                 <span className="italic text-5xl md:text-6xl text-gray-800 font-['Inter']">
-                  {text}
+                  {text.split(' ').map((word, index) => (
+                    <span key={index} className={word === 'Hire!' ? 'circle' : ''}>
+                      {word}{' '}
+                    </span>
+                  ))}
                   <span className="blinking-cursor">|</span>
                 </span>
               </div>
