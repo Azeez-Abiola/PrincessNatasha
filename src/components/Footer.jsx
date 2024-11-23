@@ -12,17 +12,17 @@ export default function Footer() {
             <div>
               <h2 className="font-bold mb-4">Services</h2>
               <ul className="space-y-2">
-                <li className="transition-transform transform hover:translate-x-2">Content Strategy</li>
-                <li className="transition-transform transform hover:translate-x-2">Content Writing</li>
-                <li className="transition-transform transform hover:translate-x-2">Copywriting</li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="/blog">Content Strategy</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="#">Content Writing</a></li>
+                
               </ul>
             </div>
             <div>
               <h2 className="font-bold mb-4">Quick Links</h2>
               <ul className="space-y-2">
-                <li className="transition-transform transform hover:translate-x-2">Contact Me</li>
-                <li className="transition-transform transform hover:translate-x-2">About Me</li>
-                <li className="transition-transform transform hover:translate-x-2">Portfolio</li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="/Contact">Contact Me</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="/About">About Me</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="/Portfolio">Portfolio</a></li>
                 <li className="transition-transform transform hover:translate-x-2"><a href="/blog">Blog</a></li>
                 <li className="transition-transform transform hover:translate-x-2">Services</li>
               </ul>
@@ -30,18 +30,16 @@ export default function Footer() {
             <div>
               <h2 className="font-bold mb-4">Social</h2>
               <ul className="space-y-2">
-                <li className="transition-transform transform hover:translate-x-2">LinkedIn</li>
-                <li className="transition-transform transform hover:translate-x-2">Instagram</li>
-                <li className="transition-transform transform hover:translate-x-2">Twitter</li>
-                <li className="transition-transform transform hover:translate-x-2">Pinterest</li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="#">LinkedIn</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="#">Instagram</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="#">Twitter</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="#">Pinterest</a></li>
               </ul>
             </div>
             <div>
               <h2 className="font-bold mb-4">Resources</h2>
               <ul className="space-y-2">
-                <li className="transition-transform transform hover:translate-x-2">SEO Resources</li>
-                <li className="transition-transform transform hover:translate-x-2">Strategy Resources</li>
-                <li className="transition-transform transform hover:translate-x-2">Freelancing Resources</li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="#">Growth Resources</a></li>
               </ul>
             </div>
           </div>

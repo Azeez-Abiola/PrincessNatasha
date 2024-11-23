@@ -1,88 +1,113 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, ChevronRight } from 'lucide-react';
 
 export default function Navbar({ onScrollToServices }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navItems = [
+    { name: 'Home', path: '/' },
+    { name: 'Portfolio', path: '#portfolio' },
+    { name: 'Services', path: '#services', onClick: onScrollToServices },
+    { name: 'About Me', path: '/about' },
+    { name: 'Blog', path: '/blog' },
+  ];
 
   return (
-    <nav className="w-full max-w-[1440px] mx-auto py-2 px-4 md:px-8 flex items-center justify-between bg-[#fff] shadow-lg mb-8 font-['Inter'] fixed top-0 left-0 right-0 z-50">
-      <Link to="/" className="flex items-center justify-center">
-        <img src="./logo.png" alt="Logo" className="w-20 h-20 md:w-24 md:h-24 rounded-full" />
-      </Link>
-      
-      {/* Desktop Navigation */}
-      <div className="hidden md:flex space-x-4 lg:space-x-8 text-[#44BBA4] font-semibold text-lg lg:text-xl">
-        {['Home', 'Portfolio', 'Services', 'About Me', 'Blog'].map((item, index) => (
-          <Link
-            key={index}
-            to={
-              item === 'Home' ? '/' :
-              item === 'About Me' ? '/about' :
-              item === 'Blog' ? '/blog' :
-              `#${item.toLowerCase().replace(" ", "")}`
-            }
-            className="relative group"
-            onClick={item === 'Services' ? onScrollToServices : null}
-          >
-            <span>{item}</span>
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#44BBA4] transform scale-x-0 transition-transform group-hover:scale-x-100"></span>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 md:h-20">
+          <Link to="/" className="flex-shrink-0">
+            <img src="./logo.png" alt="Logo" className="w-32 h-32 md:w-28 md:h-28 rounded-full transition-transform duration-300 hover:scale-110" />
           </Link>
-        ))}
-      </div>
-
-      {/* Let's Work Button */}
-      <div className="hidden md:flex">
-        <Link to="/letswork" className="relative group">
-          <button className="bg-[#44BBA4] text-[#fff] px-8 md:px-12 py-2 rounded-md transition-transform duration-300 transform hover:scale-105 hover:bg-[#2e8b7a] hover:text-[#fff] hover:border-[#44BBA4] hover:border text-base md:text-lg">
-            Work with me!
-          </button>
-        </Link>
-      </div>
-
-      {/* Mobile Hamburger Button */}
-      <button 
-        className="md:hidden ml-auto flex flex-col justify-center items-center w-8 h-8 relative z-50"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span className={`w-5 h-0.5 bg-[#44BBA4] rounded-full transition-all duration-300 ${isOpen ? 'transform rotate-45 translate-y-1.5' : ''}`}></span>
-        <span className={`w-5 h-0.5 bg-[#44BBA4] rounded-full transition-all duration-300 mt-1.5 ${isOpen ? 'opacity-0' : ''}`}></span>
-        <span className={`w-5 h-0.5 bg-[#44BBA4] rounded-full transition-all duration-300 mt-1.5 ${isOpen ? 'transform -rotate-45 -translate-y-1.5' : ''}`}></span>
-      </button>
-
-      {/* Mobile Navigation Menu */}
-      <div className={`md:hidden fixed top-0 right-0 h-screen w-full bg-white transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} z-40 flex items-center justify-center overflow-hidden`}>
-        <div className="flex flex-col space-y-6 text-center text-[#44BBA4] font-semibold text-base md:text-lg">
-          {['Home', 'Portfolio', 'Services', 'About Me', 'Blog'].map((item, index) => (
-            <Link
-              key={index}
-              to={
-                item === 'Home' ? '/' :
-                item === 'About Me' ? '/about' :
-                item === 'Blog' ? '/blog' :
-                `#${item.toLowerCase().replace(" ", "")}`
-              }
-              className="relative group"
-              onClick={() => setIsOpen(false)}
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="text-gray-700 hover:text-[#44BBA4] font-medium text-sm lg:text-base transition-colors duration-300"
+                onClick={item.onClick}
+              >
+                {item.name}
+              </Link>
+            ))}
+            <Link 
+              to="/letswork"
+              className="bg-[#44BBA4] text-white px-6 py-2 rounded-full font-medium text-sm lg:text-base transition-all duration-300 hover:bg-[#2e8b7a] hover:shadow-lg transform hover:-translate-y-1"
             >
-              <span className="group-hover:text-[#9b4819]">{item}</span>
-            </Link>
-          ))}
-          {/* Let's Work Button in Mobile Menu */}
-          <Link to="/letswork" className="relative group">
-            <button className="bg-[#44BBA4] text-white px-8 py-2 rounded-md transition-transform duration-300 transform hover:scale-105 hover:bg-[#2e8b7a] text-base">
               Work with me!
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#44BBA4] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#44BBA4]"
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              {isOpen ? (
+                <X className="block h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Menu className="block h-6 w-6" aria-hidden="true" />
+              )}
             </button>
-          </Link>
+          </div>
         </div>
       </div>
 
-      {/* Overlay for mobile menu */}
-      {isOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
-          onClick={() => setIsOpen(false)}
-        ></div>
-      )}
+      {/* Mobile Navigation Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden"
+          >
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className="text-gray-700 hover:bg-[#44BBA4] hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
+                  onClick={() => {
+                    setIsOpen(false);
+                    item.onClick && item.onClick();
+                  }}
+                >
+                  <span className="flex items-center justify-between">
+                    {item.name}
+                    <ChevronRight className="h-5 w-5" />
+                  </span>
+                </Link>
+              ))}
+              <Link
+                to="/letswork"
+                className="bg-[#44BBA4] text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-[#2e8b7a] transition-colors duration-300"
+                onClick={() => setIsOpen(false)}
+              >
+                Work with me!
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

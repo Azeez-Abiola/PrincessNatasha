@@ -28,7 +28,7 @@ function App() {
               <TestimonialsSection />
               <ProcessSection />
               <ServicesTwoSection />
-              <ServicesThreeSection />
+              {/*<ServicesThreeSection />*/}
               <ContactForm /> {/* Add the ContactForm to the homepage */}
             </main>
           } />
@@ -38,6 +38,7 @@ function App() {
         <Footer />
 
         {/* Toggle Button */}
+        {/*
         <div
           onClick={() => setTheme((prev) => !prev)}
           className={`fixed bottom-2 right-4 flex items-center justify-between w-14 h-7 px-1 rounded-full cursor-pointer transition-all ${theme ? 'bg-gray-600' : 'bg-yellow-400'}`}
@@ -52,6 +53,7 @@ function App() {
             className={`text-blue-400 text-lg absolute right-1 transition-opacity ${theme ? 'opacity-100' : 'opacity-0'}`}
           />
         </div>
+        */}
       </div>
     </Router>
   );
