@@ -19,7 +19,16 @@ export default function Navbar({ onScrollToServices }) {
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'Portfolio', path: '#portfolio' },
-    { name: 'Services', path: '#services', onClick: onScrollToServices },
+    { 
+      name: 'Services', 
+      path: '#services', 
+      onClick: onScrollToServices,
+      subItems: [
+        { name: 'Content Strategy', path: '#content-strategy' },
+        { name: 'Brand Strategy', path: '#brand-strategy' },
+        { name: 'Content Writing', path: '#content-writing' },
+      ],
+    },
     { name: 'About Me', path: '/about' },
     { name: 'Blog', path: '/blog' },
   ];
@@ -28,25 +37,44 @@ export default function Navbar({ onScrollToServices }) {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
-          <Link to="/" className="flex-shrink-0">
-            <img src="./logo.png" alt="Logo" className="w-32 h-32 md:w-28 md:h-28 rounded-full transition-transform duration-300 hover:scale-110" />
+          <Link to="/" className="flex-shrink-0 mr-auto">
+            <img src="./logo.png" alt="Logo" className="w-28 h-28 md:w-20 md:h-20 rounded-full transition-transform duration-300 hover:scale-110" />
           </Link>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className="text-gray-700 hover:text-[#44BBA4] font-medium text-sm lg:text-base transition-colors duration-300"
-                onClick={item.onClick}
-              >
-                {item.name}
-              </Link>
+              <div key={item.name} className="relative group">
+                <Link
+                  to={item.path}
+                  className="text-gray-700 hover:text-[#44BBA4] font-medium text-sm lg:text-base transition-colors duration-300 border-b-2 border-transparent hover:border-[#44BBA4] flex items-center"
+                  onClick={item.onClick}
+                >
+                  {item.name}
+                  {item.subItems && <ChevronRight className="ml-1 transform group-hover:rotate-90 transition-transform duration-300" />}
+                </Link>
+                {item.subItems && (
+                  <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-105">
+                    {item.subItems.map((subItem) => (
+                      <Link
+                        key={subItem.name}
+                        to={subItem.path}
+                        className="block px-4 py-2 text-gray-700 hover:bg-[#44BBA4] hover:text-white transition-colors duration-300"
+                      >
+                        {subItem.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
             <Link 
-              to="/letswork"
+              to="#"
               className="bg-[#44BBA4] text-white px-6 py-2 rounded-full font-medium text-sm lg:text-base transition-all duration-300 hover:bg-[#2e8b7a] hover:shadow-lg transform hover:-translate-y-1"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent default link behavior
+                document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Work with me!
             </Link>
@@ -85,7 +113,7 @@ export default function Navbar({ onScrollToServices }) {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="text-gray-700 hover:bg-[#44BBA4] hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
+                  className="text-gray-700 hover:bg-[#44BBA4] hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300 border-b-2 border-transparent hover:border-[#44BBA4]"
                   onClick={() => {
                     setIsOpen(false);
                     item.onClick && item.onClick();
@@ -98,9 +126,13 @@ export default function Navbar({ onScrollToServices }) {
                 </Link>
               ))}
               <Link
-                to="/letswork"
+                to="#"
                 className="bg-[#44BBA4] text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-[#2e8b7a] transition-colors duration-300"
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default link behavior
+                  setIsOpen(false);
+                  document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 Work with me!
               </Link>

@@ -2,9 +2,11 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Pen, KeyIcon as Strategy } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ServiceCard = ({ icon: Icon, title, description, content }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div 
@@ -21,6 +23,7 @@ const ServiceCard = ({ icon: Icon, title, description, content }) => {
       <div 
         className={`bg-[#44BBA4] p-4 text-white font-semibold text-center transition-all duration-300 cursor-pointer
                     ${isHovered ? 'bg-opacity-100' : 'bg-opacity-90'} hover:bg-opacity-100`}
+        onClick={() => navigate('/blog')}
       >
         <span className="relative inline-block">
           Learn More
@@ -54,6 +57,10 @@ const ServicesSection = forwardRef((props, ref) => {
       content: "A solid content strategy is the backbone of successful digital marketing. Our approach begins with a thorough analysis of your brand, audience, and competitors. We then craft a tailored strategy that outlines the types of content you need, the platforms to focus on, and the metrics to track. Our content strategy service ensures that every piece of content you publish is purposeful, targeted, and contributes to your overall business objectives."
     }
   ];
+
+  const scrollToContactForm = () => {
+    document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <section ref={ref} className="w-full px-6 md:px-12 py-24 bg-gradient-to-br from-gray-50 to-gray-100">
@@ -101,12 +108,12 @@ const ServicesSection = forwardRef((props, ref) => {
         </div>
 
         <div className="text-center" data-aos="fade-up">
-          <a 
-            href="#contact"
+          <button 
+            onClick={scrollToContactForm}
             className="inline-block bg-[#44BBA4] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-[#2e8b7a] transition-all duration-300 transform hover:scale-105"
           >
             Let's Craft Your Story Together
-          </a>
+          </button>
         </div>
       </div>
     </section>

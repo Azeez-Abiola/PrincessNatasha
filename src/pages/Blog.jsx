@@ -49,7 +49,7 @@ function Blog() {
   };
 
   return (
-    <div className={`${themeStyles} min-h-screen transition-colors duration-300`}>
+    <div className={`${themeStyles} min-h-screen transition-colors duration-300 mt-16`}>
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <section className="text-center mb-16">
@@ -57,15 +57,15 @@ function Blog() {
             Welcome to <span className="italic">Stella Articles</span>
           </h1>
           <p className="text-lg max-w-2xl mx-auto">
-            Here, creativity meets expertise to deliver engaging and insightful articles tailored to captivate you 🫵.
+            Here, creativity meets expertise to deliver engaging and insightful articles tailored to captivate you!
           </p>
         </section>
 
-        <section className="mb-16">
+        <section className={`mb-16 ${themeStyles} rounded-lg shadow-lg p-8`}>
           <h2 className="text-3xl font-bold text-center mb-8 italic">Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (
-              <article key={post.id} className="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+              <article key={post.id} className={`rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 ${themeStyles}`}>
                 <img 
                   src={post.thumbnail} 
                   alt={post.category} 
@@ -74,7 +74,7 @@ function Blog() {
                 />
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-[#44BBA4] mb-2">{post.category}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">{post.description}</p>
+                  <p className="mb-4">{post.description}</p>
                   <a href={post.link} className="inline-flex items-center text-[#44BBA4] hover:text-[#2e8b7a] transition-colors duration-300">
                     Read More <FaArrowRight className="ml-2" />
                   </a>
@@ -84,7 +84,7 @@ function Blog() {
           </div>
         </section>
 
-        <section className="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg p-8">
+        <section className={`rounded-lg shadow-lg p-8 ${themeStyles}`}>
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center">
             <div className="mb-8 lg:mb-0 lg:mr-8">
               <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
@@ -103,7 +103,7 @@ function Blog() {
                 placeholder="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full p-3 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className={`w-full p-3 rounded border border-gray-300 ${themeStyles}`}
                 required
               />
               <input
@@ -111,14 +111,14 @@ function Blog() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-3 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className={`w-full p-3 rounded border border-gray-300 ${themeStyles}`}
                 required
               />
               <textarea
                 placeholder="Message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full p-3 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white h-32"
+                className={`w-full p-3 rounded border border-gray-300 ${themeStyles} h-32`}
                 required
               ></textarea>
               <button

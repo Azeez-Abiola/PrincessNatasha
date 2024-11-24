@@ -10,9 +10,9 @@ export default function TestimonialsSection() {
       position: "CEO TechStart"
     },
     {
-      text: "I am beyond impressed with Natasha's writing skills and professionalism. She consistently exceeds my expectations, her attention to detail, and ability to understand my needs and requirements are truly remarkable. I highly recommend her to anyone seeking.",
-      author: "Tyron",
-      position: "Director Co-live Films"
+      text: "Working with Natasha has transformed our content strategy. Her insights and writing style have helped us reach new audiences effectively.",
+      author: "Sarah Johnson",
+      position: "CEO TechStart"
     },
     {
       text: "Natasha's creativity and dedication have been a game-changer for our marketing efforts. Her ability to craft compelling narratives is unmatched.",

@@ -7,7 +7,7 @@ function ContactForm() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e) => { // Removed ": React.FormEvent<HTMLFormElement>"
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch('https://princess-natasha-g1y8.vercel.app/send_mail', {
@@ -38,7 +38,7 @@ function ContactForm() {
   };
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-white py-16 px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="bg-gradient-to-br from-gray-50 to-white py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           <div className="bg-white p-8 rounded-lg shadow-lg">

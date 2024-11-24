@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export default function HeroSection() {
   const [text, setText] = useState('Content Writer');
@@ -8,6 +9,7 @@ export default function HeroSection() {
   const [typingSpeed, setTypingSpeed] = useState(150);
 
   const words = ['Content Writer', 'Brand Strategist', 'Content Strategist'];
+  const navigate = useNavigate();
   
   useEffect(() => {
     const handleTyping = () => {
@@ -35,6 +37,10 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, [text, isDeleting, loopNum, typingSpeed, words]);
 
+  const scrollToContactForm = () => {
+    document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden px-6 py-20 flex items-center justify-center mt-16">
       <div className="container mx-auto max-w-[1440px] flex flex-col lg:flex-row items-center justify-center gap-12">
@@ -61,6 +67,7 @@ export default function HeroSection() {
               className="bg-[#44BBA4] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-[#3a9e8a] transition-colors duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => navigate('/blog')}
             >
               I write Stellar Articles too 
             </motion.button>
@@ -68,6 +75,7 @@ export default function HeroSection() {
               className="bg-white text-[#44BBA4] border-2 border-[#44BBA4] px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-50 transition-colors duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={scrollToContactForm}
             >
               Get in Touch
             </motion.button>

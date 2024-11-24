@@ -54,7 +54,12 @@ export default function ServicesTwoSection() {
           ))}
         </div>
         <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="300">
-          <button className="px-6 py-3 text-lg font-semibold text-white bg-[#44BBA4] rounded-md hover:bg-[#2e8b7a] transition-colors duration-300">
+          <button 
+            className="px-6 py-3 text-lg font-semibold text-white bg-[#44BBA4] rounded-md hover:bg-[#2e8b7a] transition-colors duration-300"
+            onClick={() => {
+              document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
             Work with me
           </button>
         </div>
