@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const serviceAccountJson = JSON.parse(process.env.FIREBASE_ADMIN_CRENDENTIALS)
+
 initializeApp({
   credential: cert(serviceAccountJson),
 });
