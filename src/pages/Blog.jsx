@@ -71,38 +71,45 @@ function Blog() {
           </p>
         </section>
 
-          {/* Map new posts */}
+        {/* Map new posts */}
       <div className="font-['Poppins',sans-serif] mt-20">
         <h2 className="font-['Poppins',sans-serif] text-2xl font-semibold mb-2">
           Existing Blog Posts
         </h2>
-
-        {posts.length === 0 && (
-          <div className="mx-auto">
-            <img src="/no_data.svg" className="mx-auto w-80" />
-            <p className="text-center mt-5 text-2xl">
-              No posts available to display
-            </p>
-          </div>
-        )}
        
-        {posts.map((post) => (       
-        <article key={post.id} className={`flex justify-between items-center rounded-lg overflow-hidden transform transition duration-300 mb-7 hover:scale-105 ${themeStyles}`}>
-            <img 
-              src={`https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`} 
-              alt={post.category} 
-              className="w-48 h-48 object-cover"
-              onContextMenu={(e) => e.preventDefault()}
+   {posts.length === 0 ? (
+    <div className="mx-auto">
+      <img src="/no_data.svg" className="mx-auto w-80" alt="No Data" />
+      <p className="text-center mt-5 text-2xl">No posts available to display</p>
+    </div>
+     ) : (
+    <div className="grid grid-cols-1 md:grid-cols-6 gap-5">
+      {posts.map((post) => (
+        <article
+          key={post.id}
+          className={`font-['Poppins',sans-serif ]rounded-lg overflow-hidden mb-7 ${themeStyles}`}
+        >
+          <img
+            src={post.thumbnail}
+            alt={post.category}
+            className="w-full h-48 object-cover"
+            onContextMenu={(e) => e.preventDefault()}
+          />
+         <div className="p-4">
+            <h3 className="text-lg font-bold mb-2">{post.title}</h3>
+            <p className="text-sm text-gray-500 italic">{post.createdAt}</p>
+            <p className="font-bold text-[#44BBA4]">{post.category}</p>
+            <div
+              className="text-sm mt-2"
+              dangerouslySetInnerHTML={{ __html: post.description }}
             />
-            <div className="p-6">
-              <p className="italic">{post.createdAt}</p>
-              <p className="mb-4">{post.title}</p>
-              <h3 className="text-xl font-bold text-[#44BBA4] mb-2">{post.category}</h3>
-              <div dangerouslySetInnerHTML={{ __html: post.description }} />
-            </div>
-          </article>
-        ))}
-      </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  )}
+    </div>
+
 
         <section className={`rounded-lg shadow-lg p-8 ${themeStyles}`}>
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center">
