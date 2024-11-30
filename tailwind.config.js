@@ -12,7 +12,8 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['Georgia', 'serif'],
+        'serif': ['Georgia', 'serif'],
+        'poppins': ['Poppins', 'sans-serif'],
       },
     },
   },
