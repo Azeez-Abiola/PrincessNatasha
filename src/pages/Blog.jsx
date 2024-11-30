@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
+import { Plus, Sun, Moon } from "lucide-react";
 import { FaSun, FaMoon, FaArrowRight, FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane } from 'react-icons/fa';
 
 function Blog() {
@@ -10,14 +11,23 @@ function Blog() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [theme, setTheme] = useState(false);
-  const posts = [
-    { id: 1, thumbnail: 'https://securityintelligence.com/wp-content/uploads/2020/06/si-categoryImages-artificialIntelligence@2x.jpg', category: 'ARTIFICIAL INTELLIGENCE', description: 'Explore articles about how AI impacts the cybersecurity workforce, ethics, and machine learning.', link: '#' },
-    { id: 2, thumbnail: 'https://securityintelligence.com/wp-content/uploads/2020/06/si-categoryImages-networking@2x.jpg', category: 'Network', description: 'Network security is critical both at home and in the enterprise. Learn more about network vulnerability.', link: '#' },
-    // Add more posts as needed
-  ];
-
+  const [posts, setPosts] = useState([]);
   const themeStyles = theme ? 'bg-gray-900 text-white' : 'bg-white text-gray-900';
-
+ 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try{
+        const response = await fetch('http://localhost:5000/fetch_posts');
+        const data = await response.json();
+        setPosts(data);
+      }
+      catch(error){
+        console.error(error)
+      }
+    }
+    fetchPosts();
+  }, []);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -61,28 +71,38 @@ function Blog() {
           </p>
         </section>
 
-        <section className={`mb-16 ${themeStyles} rounded-lg shadow-lg p-8`}>
-          <h2 className="text-3xl font-bold text-center mb-8 italic">Categories</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
-              <article key={post.id} className={`rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 ${themeStyles}`}>
-                <img 
-                  src={post.thumbnail} 
-                  alt={post.category} 
-                  className="w-full h-48 object-cover"
-                  onContextMenu={(e) => e.preventDefault()}
-                />
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-[#44BBA4] mb-2">{post.category}</h3>
-                  <p className="mb-4">{post.description}</p>
-                  <a href={post.link} className="inline-flex items-center text-[#44BBA4] hover:text-[#2e8b7a] transition-colors duration-300">
-                    Read More <FaArrowRight className="ml-2" />
-                  </a>
-                </div>
-              </article>
-            ))}
+          {/* Map new posts */}
+      <div className="font-['Poppins',sans-serif] mt-20">
+        <h2 className="font-['Poppins',sans-serif] text-2xl font-semibold mb-2">
+          Existing Blog Posts
+        </h2>
+
+        {posts.length === 0 && (
+          <div className="mx-auto">
+            <img src="/no_data.svg" className="mx-auto w-80" />
+            <p className="text-center mt-5 text-2xl">
+              No posts available to display
+            </p>
           </div>
-        </section>
+        )}
+       
+        {posts.map((post) => (       
+        <article key={post.id} className={`flex justify-between items-center rounded-lg overflow-hidden transform transition duration-300 mb-7 hover:scale-105 ${themeStyles}`}>
+            <img 
+              src={`http://localhost:5000/${post.thumbnail}`} 
+              alt={post.category} 
+              className="w-48 h-48 object-cover"
+              onContextMenu={(e) => e.preventDefault()}
+            />
+            <div className="p-6">
+              <p className="italic">{post.createdAt}</p>
+              <p className="mb-4">{post.title}</p>
+              <h3 className="text-xl font-bold text-[#44BBA4] mb-2">{post.category}</h3>
+              <div dangerouslySetInnerHTML={{ __html: post.description }} />
+            </div>
+          </article>
+        ))}
+      </div>
 
         <section className={`rounded-lg shadow-lg p-8 ${themeStyles}`}>
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center">

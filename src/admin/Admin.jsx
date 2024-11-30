@@ -12,10 +12,14 @@ export default function Admin() {
   const [loadingText, setLoadingText] = useState(""); 
   const [theme, setTheme] = useState(false)
   const [title, setTitle] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
   const [category, setCategory] = useState("Freelance Resources");
   const [description, setDescription] = useState("");
   const [posts, setPosts] = useState([]);
   const navigate= useNavigate();
+  
+   const themeStyles = theme ? 'bg-white shadow-2xl text-black' : 'bg-stone-950 shadow-2xl text-white';
+   
   useEffect(() => {
     const fetchPosts = async () => {
       try{
@@ -31,36 +35,47 @@ export default function Admin() {
     fetchPosts();
   }, []);
   
-  //Add Posts to the database 
+  //Add Posts to the database
   const handleUploadPost = async (event) => {
-    event.preventDefault();
-    setLoadingText("Uploading post...");
-    setLoading(true);
-    try {
-      const response = await fetch('http://localhost:5000/new_post', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, category }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to create a post");
-      }
-      const data = await response.json();
-      setPosts((prevPosts) => [...prevPosts, data]); 
-      toast.success("Post added successfully!");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to add post");
-    } finally {
-      setTitle("");
-      setDescription("");
-      setCategory("");
-      setLoading(false);
+  event.preventDefault();
+  setLoadingText("Uploading post...");
+  setLoading(true);
+
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("description", description);
+  formData.append("category", category);
+  formData.append("thumbnail", thumbnail);
+
+  try {
+    const response = await fetch("http://localhost:5000/new_post", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create a post");
     }
-  };
+
+    const data = await response.json();
+    setPosts((prevPosts) => [...prevPosts, data]);
+    toast.success("Post added successfully!");
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to add post");
+    setLoading(false)
+  } finally {
+    setTitle("");
+    setDescription("");
+    setCategory("");
+    setThumbnail("");
+    setLoading(false);
+  }
+};
+
   //Delete post from the  database 
   const handleDeletePost = async (id) => {
-    setLoadingText("Deleting post...");
+   setLoadingText("Deleting post...");
   setLoading(true);
   try {
     const response = await fetch(`http://localhost:5000/fetch_posts/${id}`, {
@@ -121,7 +136,20 @@ export default function Admin() {
           <option>General Contents</option>
           </select>
         </div>
-        
+      
+         <div>
+          <label className="font-semibold">Thumbnail</label><input
+          type="file"
+          id="thumbnail"
+          name="thumbnail"
+          accept="image/*"
+          onChange={(event) => setThumbnail(event.target.files[0])}
+         className="rounded py-2 px-3 border-2 border-[#44BBA4] w-full"
+        required
+    />
+
+        </div>
+          
         <div className={`${theme ? 'text-black' : 'bg-black text-white'} relative rounded border-2 border-[#44BBA4] w-full`}>
        <label htmlFor="select" className="font-['Poppins',sans-serif] font-semibold">Post Description/Contents</label>
           <ReactQuill
@@ -154,16 +182,18 @@ export default function Admin() {
           </div>
         )}
        
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="flex items-center justify-between p-2 mb-10 border-2 rounded"
-          >
-            <div>
-              <h2 className="font-['Poppins',sans-serif] font-bold">
-                {post.title} <span className="italic">{post.createdAt}</span>
-              </h2>
-              <p><span className="font-bold">Category:</span> {post.category}</p>
+        {posts.map((post) => (       
+        <article key={post.id} className={`flex justify-between items-center rounded-lg overflow-hidden transform transition duration-300 mb-7 hover:scale-105 ${themeStyles}`}>
+            <img 
+              src={`http://localhost:5000/${post.thumbnail}`} 
+              alt={post.category} 
+              className="w-48 h-48 object-cover"
+              onContextMenu={(e) => e.preventDefault()}
+            />
+            <div className="p-6">
+              <p className="italic">{post.createdAt}</p>
+              <p className="mb-4">{post.title}</p>
+              <h3 className="text-xl font-bold text-[#44BBA4] mb-2">{post.category}</h3>
               <div dangerouslySetInnerHTML={{ __html: post.description }} />
             </div>
             <button
@@ -173,7 +203,7 @@ export default function Admin() {
             >
               <Trash className="w-6 h-6" />
             </button>
-          </div>
+          </article>
         ))}
       </div>
 
