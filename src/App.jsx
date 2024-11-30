@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HeroSection from './components/Hero';
 import ServicesSection from './components/ServicesSection';
@@ -10,16 +10,24 @@ import Footer from './components/Footer';
 import AboutMe from './components/Aboutme';
 import Blog from './pages/Blog';
 import Admin from './admin/Admin';
+import Login from './admin/Login'
+import NotFoundPage from './pages/NotFoundPage'
 import ContactForm from './components/ContactForm';
 import { FaSun, FaMoon } from 'react-icons/fa';
 
 function App() {
   const [theme, setTheme] = useState(false);
-  const location = useLocation();
+  const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem('isAdmin') === 'true')
 
+   useEffect(() => {
+    const Status = localStorage.getItem('isAdmin')
+    setIsAdmin(Status === 'true')
+  },[])
+  const location = useLocation();
+  
   return (
     <div className={`${theme ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen overflow-x-hidden`}>
-      {location.pathname !== '/admin' && <Navbar />}
+      {location.pathname !== '/admin' && location.pathname !== '/login' && <Navbar />}
       <Routes>
         <Route path="/" element={
           <main>
@@ -33,10 +41,12 @@ function App() {
         } />
         <Route path="/about" element={<AboutMe />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/login" element={<Login setIsAdmin={setIsAdmin}/>} />
+        <Route path="/admin" element={isAdmin ? <Admin /> : <Navigate to="/login" />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     
-       {location.pathname !== '/admin' && <Footer />}
+       {location.pathname !== '/admin' && location.pathname !== '/login' && <Footer />}
 
       {/* Toggle Theme */}
       {/* 
@@ -66,3 +76,5 @@ export default function AppWrapper() {
     </Router>
   );
 }
+
+
