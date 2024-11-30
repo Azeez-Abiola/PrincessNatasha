@@ -17,7 +17,7 @@ function Blog() {
   useEffect(() => {
     const fetchPosts = async () => {
       try{
-        const response = await fetch('http://localhost:5000/fetch_posts');
+        const response = await fetch('https://princess-natasha-g1y8.vercel.app/fetch_posts');
         const data = await response.json();
         setPosts(data);
       }
@@ -89,7 +89,7 @@ function Blog() {
         {posts.map((post) => (       
         <article key={post.id} className={`flex justify-between items-center rounded-lg overflow-hidden transform transition duration-300 mb-7 hover:scale-105 ${themeStyles}`}>
             <img 
-              src={`http://localhost:5000/${post.thumbnail}`} 
+              src={`https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`} 
               alt={post.category} 
               className="w-48 h-48 object-cover"
               onContextMenu={(e) => e.preventDefault()}
