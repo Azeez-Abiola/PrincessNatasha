@@ -18,15 +18,15 @@ export default function Navbar({ onScrollToServices }) {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Portfolio', path: '#portfolio' },
+    { name: 'Portfolio', path: '/portfolio' }, // Updated path to navigate to Portfolio page
     { 
       name: 'Services', 
       path: '#services', 
       onClick: onScrollToServices,
       subItems: [
-        { name: 'Content Strategy', path: '#content-strategy' },
-        { name: 'Brand Strategy', path: '#brand-strategy' },
-        { name: 'Content Writing', path: '#content-writing' },
+        { name: 'Content Strategy', path: '/blog' },
+        { name: 'Brand Strategy', path: '/blog' },
+        { name: 'Content Writing', path: '/blog' },
       ],
     },
     { name: 'About Me', path: '/about' },

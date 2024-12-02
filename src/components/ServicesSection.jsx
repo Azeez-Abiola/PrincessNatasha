@@ -59,11 +59,11 @@ const ServicesSection = forwardRef((props, ref) => {
   ];
 
   const scrollToContactForm = () => {
-    document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+    document.querySelector('#contact-form').scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section ref={ref} className="w-full px-6 md:px-12 py-24 bg-gradient-to-br from-gray-50 to-gray-100">
+    <section ref={ref} id="services-section" className="w-full px-6 md:px-12 py-24 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container mx-auto">
         <h2
           className="text-4xl md:text-5xl font-bold mb-8 text-center text-gray-800"
@@ -88,7 +88,7 @@ const ServicesSection = forwardRef((props, ref) => {
         </div>
 
         <div className="text-center mb-20" data-aos="fade-up">
-          <h3 className="text-3xl font-bold mb-8 text-gray-800">From ideation to execution, i've got you covered</h3>
+          <h3 className="text-3xl font-bold mb-8 text-gray-800">From ideation to execution, I've got you covered</h3>
           <div className="relative rounded-xl overflow-hidden shadow-2xl max-w-4xl mx-auto">
             <video
               autoPlay
@@ -102,14 +102,16 @@ const ServicesSection = forwardRef((props, ref) => {
             </video>
             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
             <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-              
+              {/* Additional content can go here */}
             </div>
           </div>
         </div>
 
         <div className="text-center" data-aos="fade-up">
           <button 
-            onClick={scrollToContactForm}
+            onClick={() => {
+              document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+            }}
             className="inline-block bg-[#44BBA4] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-[#2e8b7a] transition-all duration-300 transform hover:scale-105"
           >
             Let's Craft Your Story Together

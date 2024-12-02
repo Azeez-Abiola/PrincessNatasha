@@ -1,218 +1,288 @@
 import { useState, useEffect } from "react";
-import { Plus, Trash, Sun, Moon } from "lucide-react";
+import { Plus, Trash, Sun, Moon, LogOut, ImageIcon } from 'lucide-react';
 import ReactQuill from "react-quill";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
-import { toast } from 'react-toastify';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Admin() {
   const [loading, setLoading] = useState(false);
-  const [loadingText, setLoadingText] = useState(""); 
-  const [theme, setTheme] = useState(false)
+  const [loadingText, setLoadingText] = useState("");
+  const [isDark, setIsDark] = useState(false);
   const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [category, setCategory] = useState("Freelance Resources");
   const [description, setDescription] = useState("");
   const [posts, setPosts] = useState([]);
-  const navigate= useNavigate();
-  
-   const themeStyles = theme ? 'bg-white shadow-2xl text-black' : 'bg-stone-950 shadow-2xl text-white';
-   
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchPosts = async () => {
-      try{
+      try {
         const response = await fetch('https://princess-natasha-g1y8.vercel.app/fetch_posts');
         const data = await response.json();
-        console.log(data);
         setPosts(data);
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to fetch posts");
       }
-      catch(error){
-        console.error(error)
-      }
-    }
+    };
     fetchPosts();
   }, []);
-  
-  //Add Posts to the database
+
   const handleUploadPost = async (event) => {
-  event.preventDefault();
-  setLoadingText("Uploading post...");
-  setLoading(true);
+    event.preventDefault();
+    setLoadingText("Uploading post...");
+    setLoading(true);
 
-  const formData = new FormData();
-  formData.append("title", title);
-  formData.append("description", description);
-  formData.append("category", category);
-  formData.append("thumbnail", thumbnail);
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("thumbnail", thumbnail);
 
-  try {
-    const response = await fetch("https://princess-natasha-g1y8.vercel.app/new_post", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const response = await fetch("https://princess-natasha-g1y8.vercel.app/new_post", {
+        method: "POST",
+        body: formData,
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to create a post");
+      if (!response.ok) throw new Error("Failed to create a post");
+
+      const data = await response.json();
+      setPosts((prevPosts) => [...prevPosts, data]);
+      toast.success("Post added successfully!");
+      
+      // Reset form
+      setTitle("");
+      setDescription("");
+      setCategory("Freelance Resources");
+      setThumbnail("");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add post");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const data = await response.json();
-    setPosts((prevPosts) => [...prevPosts, data]);
-    toast.success("Post added successfully!");
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to add post");
-    setLoading(false)
-  } finally {
-    setTitle("");
-    setDescription("");
-    setCategory("");
-    setThumbnail("");
-    setLoading(false);
-  }
-};
-
-  //Delete post from the  database 
   const handleDeletePost = async (id) => {
-   setLoadingText("Deleting post...");
-  setLoading(true);
-  try {
-    const response = await fetch(`https://princess-natasha-g1y8.vercel.app/fetch_posts/${id}`, {
-      method: "DELETE",
-    });
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
+    
+    setLoadingText("Deleting post...");
+    setLoading(true);
+    
+    try {
+      const response = await fetch(`https://princess-natasha-g1y8.vercel.app/fetch_posts/${id}`, {
+        method: "DELETE",
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to delete the post");
+      if (!response.ok) throw new Error("Failed to delete the post");
+      
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+      toast.success('Post deleted successfully');
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete post");
+    } finally {
+      setLoading(false);
     }
-    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
-  } catch (error) {
-    console.error("Failed to delete post:", error);
-  } finally {
-    setLoading(false);
-    toast.info('Post Deleted Successfully');
-  }
-};
+  };
 
   return (
-      <section className={`${theme ? 'bg-white text-black' : 'bg-black text-white'} min-h-screen font-['Poppins',sans-serif] p-4`}>
-     <ToastContainer />
-      <div className="flex items-center justify-between font-['Poppins',sans-serif] font-bold text-2xl mb-10">
-        <h2 className="font-['Poppins',sans-serif] text-[#44BBA4]">Welcome Natasha</h2> 
-        <button onClick={() => setTheme((prev) => !prev)}>
-          {theme ? (<Moon />) : (<Sun />)}
-        </button>
-     
-        <button 
-        className="rounded px-3 py-2 border-2 border-[#44BBA4] bg-transparent"
-        onClick={() => {
-         localStorage.removeItem('isAdmin');
-         location.href = '/login';
-        }}>Logout</button>
-      </div>
-
-   <form className="block space-y-6" onSubmit={handleUploadPost}>
-     <div>
-       <label htmlFor="select" className="font-['Poppins',sans-serif] font-semibold">Post Title</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          placeholder="Post title"
-          className={`${theme ? 'text-black' : ' bg-black text-white'} rounded py-2 px-3 border-2 border-[#44BBA4] w-full`}
-          required
-        />
-        </div>
-        
-        <div>
-        <label htmlFor="select" className="font-['Poppins',sans-serif] font-semibold">Select Category</label>
-         <select
-         name="select" 
-         value={category}
-         onChange={(event) => setCategory(event.target.value)}
-         className={`${theme ? 'bg-white' : 'bg-black'} rounded py-2 px-3 border-2 border-[#44BBA4] w-full`}>
-          <option>Freelance Resources</option>
-          <option>Small Business Growth Tips</option>
-          <option>General Contents</option>
-          </select>
-        </div>
+    <div className={`min-h-screen transition-colors duration-300 ${
+      isDark ? 'bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100' : 'bg-gradient-to-b from-gray-50 to-white text-gray-900'
+    }`}>
+      <ToastContainer theme={isDark ? 'dark' : 'light'} />
       
-         <div>
-          <label className="font-semibold">Thumbnail</label><input
-          type="file"
-          id="thumbnail"
-          name="thumbnail"
-          accept="image/*"
-          onChange={(event) => setThumbnail(event.target.files[0])}
-         className="rounded py-2 px-3 border-2 border-[#44BBA4] w-full"
-        required
-    />
-
-        </div>
-          
-        <div className={`${theme ? 'text-black' : 'bg-black text-white'} relative rounded border-2 border-[#44BBA4] w-full`}>
-       <label htmlFor="select" className="font-['Poppins',sans-serif] font-semibold">Post Description/Contents</label>
-          <ReactQuill
-            value={description}
-            onChange={(content) => setDescription(content)}
-            placeholder="Post description"
-           />
-        </div>
-
-        <button
-          type="submit"
-          className="bg-[#44BBA4] text-white mt-10 rounded py-2 px-4 block"
-        >
-          <Plus className="inline mr-2" /> Add New Post
-        </button>
-      </form>
-
-      {/* Map new posts */}
-      <div className="font-['Poppins',sans-serif] mt-20">
-        <h2 className="font-['Poppins',sans-serif] text-2xl font-semibold mb-2">
-          Existing Blog Posts
-        </h2>
-
-        {posts.length === 0 && (
-          <div className="mx-auto">
-            <img src="/no_data.svg" className="mx-auto w-80" />
-            <p className="text-center mt-5 text-2xl">
-              No posts available to display
-            </p>
-          </div>
-        )}
-       
-        {posts.map((post) => (       
-        <article key={post.id} className={`flex justify-between items-center rounded-lg overflow-hidden transform transition duration-300 mb-7 hover:scale-105 ${themeStyles}`}>
-            <img 
-              src={`https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`} 
-              alt={post.category} 
-              className="w-48 h-48 object-cover"
-              onContextMenu={(e) => e.preventDefault()}
-            />
-            <div className="p-6">
-              <p className="italic">{post.createdAt}</p>
-              <p className="mb-4">{post.title}</p>
-              <h3 className="text-xl font-bold text-[#44BBA4] mb-2">{post.category}</h3>
-              <div dangerouslySetInnerHTML={{ __html: post.description }} />
+      {/* Header */}
+      <header className={`sticky top-0 z-50 backdrop-blur-lg border-b ${
+        isDark ? 'border-gray-700/50 bg-gray-900/50' : 'border-gray-200/50 bg-white/50'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 flex-wrap">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span style={{ color: '#44BBA4' }}>Welcome to Your Dashboard Natasha</span>
+            </h1>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setIsDark(prev => !prev)}
+                className={`p-2 rounded-full transition-colors ${
+                  isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+              >
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem('isAdmin');
+                  navigate('/login');
+                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#44BBA4] text-white hover:bg-[#3A9A8A] transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
             </div>
-            <button
-              onClick={() => handleDeletePost(post.id)}
-              className="text-red-500 hover:text-red-700"
-              title="Delete Post"
-            >
-              <Trash className="w-6 h-6" />
-            </button>
-          </article>
-        ))}
-      </div>
+          </div>
+        </div>
+      </header>
 
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* New Post Form */}
+        <div className={`rounded-xl p-6 mb-8 ${
+          isDark ? 'bg-gray-800/50 ring-1 ring-gray-700/50' : 'bg-white shadow-xl'
+        }`}>
+          <h2 className="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="text-[#44BBA4]">Create New Post</span>
+          </h2>
+          <form onSubmit={handleUploadPost} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">Post Title</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter post title"
+                className={`w-full px-4 py-2 rounded-lg border ${
+                  isDark ? 'bg-gray-700/50 border-gray-600 placeholder-gray-400' : 'bg-white border-gray-200'
+                }`}
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Category</label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className={`w-full px-4 py-2 rounded-lg border ${
+                  isDark ? 'bg-gray-700/50 border-gray-600' : 'bg-white border-gray-200'
+                }`}
+              >
+                <option>Freelance Resources</option>
+                <option>Small Business Growth Tips</option>
+                <option>General Contents</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Thumbnail</label>
+              <div className={`flex items-center gap-4 p-4 rounded-lg border-2 border-dashed ${
+                isDark ? 'border-gray-600' : 'border-gray-200'
+              }`}>
+                <ImageIcon className="w-6 h-6 text-gray-400" />
+                <input
+                  type="file"
+                  onChange={(e) => setThumbnail(e.target.files[0])}
+                  accept="image/*"
+                  className="text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Content</label>
+              <div className={`rounded-lg ${isDark ? 'bg-gray-700/50' : 'bg-white'}`}>
+                <ReactQuill
+                  value={description}
+                  onChange={setDescription}
+                  theme="snow"
+                  className={isDark ? 'text-white' : 'text-gray-900'}
+                  modules={{
+                    toolbar: [
+                      [{ header: [1, 2, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      ['link', 'image'],
+                      ['clean']
+                    ]
+                  }}
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2 px-4 rounded-lg bg-[#44BBA4] text-white font-medium hover:bg-[#3A9A8A] transition-opacity disabled:opacity-50"
+            >
+              <Plus className="inline-block w-5 h-5 mr-2" />
+              Add New Post
+            </button>
+          </form>
+        </div>
+
+        {/* Existing Posts */}
+        <div>
+          <h2 className="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="text-[#44BBA4]">Existing Blog Posts</span>
+          </h2>
+
+          {posts.length === 0 ? (
+            <div className="text-center py-12">
+              <img src="/no_data.svg" alt="No posts" className="w-48 h-48 mx-auto mb-4 opacity-50" />
+              <p className="text-gray-500">No posts available to display</p>
+            </div>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {posts.map((post) => (
+                <article
+                  key={post.id}
+                  className={`rounded-xl overflow-hidden transition-all hover:-translate-y-1 ${
+                    isDark ? 'bg-gray-800/50 ring-1 ring-gray-700/50' : 'bg-white shadow-xl'
+                  }`}
+                >
+                  <img
+                    src={`https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`}
+                    alt={post.title}
+                    className="w-full h-48 object-cover"
+                    onContextMenu={(e) => e.preventDefault()}
+                  />
+                  <div className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-500">
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </span>
+                      <span className={`px-3 py-1 rounded-full text-xs ${
+                        isDark ? 'bg-gray-700' : 'bg-gray-100'
+                      }`}>
+                        {post.category}
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
+                    <div
+                      className={`prose prose-sm mb-4 ${isDark ? 'prose-invert' : ''}`}
+                      dangerouslySetInnerHTML={{
+                        __html: post.description.substring(0, 150) + '...'
+                      }}
+                    />
+                    <button
+                      onClick={() => handleDeletePost(post.id)}
+                      className="text-red-500 hover:text-red-600 transition-colors"
+                      title="Delete Post"
+                    >
+                      <Trash className="w-5 h-5" />
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Loading Overlay */}
       {loading && (
-        <div className="flex-col h-full fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-10">
-          <img src="/tube-spinner (1).svg" className="w-80" alt="Loading..." />
-          <p className="text-3xl text-white">{loadingText}</p>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
+            <img src="/tube-spinner.svg" alt="Loading" className="w-16 h-16 mb-4" />
+            <p className="text-center">{loadingText}</p>
+          </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }

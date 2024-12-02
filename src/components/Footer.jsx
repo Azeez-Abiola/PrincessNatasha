@@ -13,33 +13,62 @@ export default function Footer() {
               <h2 className="font-bold mb-4">Services</h2>
               <ul className="space-y-2">
                 <li className="transition-transform transform hover:translate-x-2"><a href="/blog">Content Strategy</a></li>
-                <li className="transition-transform transform hover:translate-x-2"><a href="#">Content Writing</a></li>
-                
+                <li className="transition-transform transform hover:translate-x-2"><a href="/blog">Content Writing</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="/blog">Brand Strategy</a></li>
               </ul>
             </div>
             <div>
               <h2 className="font-bold mb-4">Quick Links</h2>
               <ul className="space-y-2">
-                <li className="transition-transform transform hover:translate-x-2"><a href="/Contact">Contact Me</a></li>
+                <li className="transition-transform transform hover:translate-x-2">
+                  <a 
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default link behavior
+                      document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Contact Me
+                  </a>
+                </li>
                 <li className="transition-transform transform hover:translate-x-2"><a href="/About">About Me</a></li>
                 <li className="transition-transform transform hover:translate-x-2"><a href="/Portfolio">Portfolio</a></li>
                 <li className="transition-transform transform hover:translate-x-2"><a href="/blog">Blog</a></li>
-                <li className="transition-transform transform hover:translate-x-2">Services</li>
+                <li className="transition-transform transform hover:translate-x-2" 
+                    onClick={(e) => {
+                        e.preventDefault(); // Prevent default link behavior
+                        document.querySelector('#services-section').scrollIntoView({ behavior: 'smooth' });
+                    }}
+                >
+                    Services
+                </li>
               </ul>
             </div>
             <div>
               <h2 className="font-bold mb-4">Social</h2>
               <ul className="space-y-2">
-                <li className="transition-transform transform hover:translate-x-2"><a href="#">LinkedIn</a></li>
-                <li className="transition-transform transform hover:translate-x-2"><a href="#">Instagram</a></li>
-                <li className="transition-transform transform hover:translate-x-2"><a href="#">Twitter</a></li>
-                <li className="transition-transform transform hover:translate-x-2"><a href="#">Pinterest</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="Linkedin-
+
+https://www.linkedin.com/in/princess-natasha-balogun-6a79a7a2?">LinkedIn</a></li>
+                <li className="transition-transform transform hover:translate-x-2"><a href="Instagram- 
+
+https://www.instagram.com/natasha_balogun?igsh=MTk0Y2x2dnhnODFhdg%3D%3D&utm_source=qr">Instagram</a></li>
               </ul>
             </div>
             <div>
               <h2 className="font-bold mb-4">Resources</h2>
               <ul className="space-y-2">
-                <li className="transition-transform transform hover:translate-x-2"><a href="#">Growth Resources</a></li>
+                <li className="transition-transform transform hover:translate-x-2">
+                  <a 
+                    href="/blog"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default link behavior
+                      window.location.href = '/blog'; // Navigate to the blog page
+                    }}
+                  >
+                    Growth Resources
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
