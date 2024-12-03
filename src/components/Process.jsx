@@ -26,12 +26,12 @@ export default function ProcessSection() {
         >
           <div className="space-y-4">
             {[
-              "You want quality SEO content on autopilot while you manage other business facets",
-              'You want your audience to scream "aha!" when they read your content',
-              "You want to build authority with memorable content across your channels",
-              "You want to maximize your content marketing budget",
-              "You want content that ranks AND converts",
-              "You're tired of hiring freelance content marketers who just don't get it"
+              "You book a free discovery call or, as I like to call it, a   ‘therapy session’",
+              'Share your content problems and the results you want.',
+              "Send me all I need to know about your brand",
+              "I offer you tailored solutions ",
+              "You make a down payment-The feast begins",
+              
             ].map((text, index) => (
               <div 
                 key={index} 

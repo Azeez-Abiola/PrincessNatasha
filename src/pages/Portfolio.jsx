@@ -10,28 +10,28 @@ const portfolioItems = [
     title: "10 of the Best Yoga HeadBands for Curly Hair That Actually",
     category: "General Content", 
     thumbnail: "/yoga2.png",
-    link: "https://docs.google.com/file/d/1mIqL2QRZPzvTXjrFjEbztqEqK7Nd8efg/edit?usp=docslist_api&filetype=msword"
+    link: "https://docs.google.com/file/d/1wwkNIK2lMtm-4yNoJtvgRSV_8CkcDZyO/edit?usp=docslist_api&filetype=msword"
   },
   {
     id: 2,
     title: "Managed IT Services",
     category: "B2B",
     thumbnail: "/IT.jpg",
-    link: "https://docs.google.com/document/d/1pB6PI9_Gb3QyndVkv0fdS1vse_JbQAXWxona6rsaUw8/edit"
+    link: "https://docs.google.com/document/d/1KbOlR4wZYylFo_IE47Wtf3ZU3kWabbcAkKpNqkYnK4Y/edit"
   },
   {
     id: 3,
     title: "All you need to know about PPC Marketing", 
     category: "B2B",
     thumbnail: "/ppc.jpg",
-    link: "https://docs.google.com/file/d/1wwkNIK2lMtm-4yNoJtvgRSV_8CkcDZyO/edit?usp=docslist_api&filetype=msword"
+    link: "https://docs.google.com/file/d/1mIqL2QRZPzvTXjrFjEbztqEqK7Nd8efg/edit?usp=docslist_api&filetype=msword"
   },
   {
     id: 4,
     title: "7 Ways We Are Changing Our Summer Workout with Our Mindset ",
     category: "General Content",
     thumbnail: "/summer.jpg",
-    link: "https://docs.google.com/document/d/1KbOlR4wZYylFo_IE47Wtf3ZU3kWabbcAkKpNqkYnK4Y/edit"
+    link: "https://docs.google.com/document/d/1pB6PI9_Gb3QyndVkv0fdS1vse_JbQAXWxona6rsaUw8/edit"
   }
 ];
 

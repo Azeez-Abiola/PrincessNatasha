@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Cookie, Rocket, Users } from 'lucide-react';
+import { Target, BarChart2, Users } from 'lucide-react';
 
 export default function ServicesTwoSection() {
   useEffect(() => {
@@ -10,18 +10,18 @@ export default function ServicesTwoSection() {
 
   const services = [
     {
-      icon: <Cookie className="h-12 w-12 text-[#44BBA4]" />,
-      title: "No Cookie Cutters",
+      icon: <Target className="h-12 w-12 text-[#44BBA4]" />,
+      title: "Goal Driven",
       description: "Value-packed deliverables tailored to your goals that hit the mark, every single time."
     },
     {
-      icon: <Rocket className="h-12 w-12 text-[#44BBA4]" />,
-      title: "Growth-focused Solutions",
+      icon: <BarChart2 className="h-12 w-12 text-[#44BBA4]" />,
+      title: "Measurable", 
       description: "Memorable and measurable content that not only stands out but grows your business."
     },
     {
       icon: <Users className="h-12 w-12 text-[#44BBA4]" />,
-      title: "For Bots and Humans",
+      title: "Relatable",
       description: "Quality and creative human-written SEO content your audience and SERPs will love."
     }
   ];
@@ -67,4 +67,3 @@ export default function ServicesTwoSection() {
     </section>
   );
 }
-

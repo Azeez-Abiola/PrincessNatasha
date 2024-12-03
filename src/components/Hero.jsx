@@ -69,7 +69,7 @@ export default function HeroSection() {
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/blog')}
             >
-              I write Stellar Articles too 
+              I want Stellar Articles too 
             </motion.button>
             <motion.button 
               className="bg-white text-[#44BBA4] border-2 border-[#44BBA4] px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-50 transition-colors duration-300"
