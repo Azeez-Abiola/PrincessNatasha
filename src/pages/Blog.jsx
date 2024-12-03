@@ -84,14 +84,14 @@ function Blog() {
               {posts.map((post) => (
                 <article
                   key={post.id}
-                  className={`rounded-xl overflow-hidden transition-transform duration-300 hover:scale-105 ${
+                  className={`rounded-xl overflow-hidden transition-all duration-700 ease-in-out transform hover:scale-105 hover:shadow-2xl ${
                     isDark ? 'bg-gray-800/50 ring-1 ring-gray-700/50' : 'bg-white shadow-xl'
                   }`}
                 >
                   <img
                     src={post.thumbnail.startsWith('http') ? post.thumbnail : `https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`}
                     alt={post.title}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover transition-transform duration-700 ease-in-out hover:scale-105"
                   />
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">

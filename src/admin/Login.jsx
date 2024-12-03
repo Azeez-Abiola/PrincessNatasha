@@ -8,7 +8,7 @@ import app from "./firebaseConfig";
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export default function Login({setIsAdmin}) {
+export default function Login({ setIsAdmin }) {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,10 +16,11 @@ export default function Login({setIsAdmin}) {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
+    setLoading(true);
+    setError("");
+
     try {
-      setLoading(true);
-      setError("");
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
@@ -34,7 +35,7 @@ export default function Login({setIsAdmin}) {
           setError("You are not authorized to access the admin panel.");
         }
       } else {
-        setError("User not found in Firestore.");
+        setError("User not found in Firestore. Please try again later.");
       }
     } catch (err) {
       console.error(err);

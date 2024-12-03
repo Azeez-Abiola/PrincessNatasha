@@ -7,30 +7,30 @@ import Navbar from '../components/Navbar';
 const portfolioItems = [
   {
     id: 1,
-    title: "B2B Content Strategy",
-    category: "B2B",
-    thumbnail: "/placeholder.svg?height=200&width=300",
+    title: "10 of the Best Yoga HeadBands for Curly Hair That Actually",
+    category: "General Content", 
+    thumbnail: "/yoga2.png",
     link: "https://docs.google.com/file/d/1mIqL2QRZPzvTXjrFjEbztqEqK7Nd8efg/edit?usp=docslist_api&filetype=msword"
   },
   {
     id: 2,
-    title: "B2B Marketing Campaign",
+    title: "Managed IT Services",
     category: "B2B",
-    thumbnail: "/placeholder.svg?height=200&width=300",
+    thumbnail: "/IT.jpg",
     link: "https://docs.google.com/document/d/1pB6PI9_Gb3QyndVkv0fdS1vse_JbQAXWxona6rsaUw8/edit"
   },
   {
     id: 3,
-    title: "General Content Writing",
-    category: "General Content",
-    thumbnail: "/placeholder.svg?height=200&width=300",
+    title: "All you need to know about PPC Marketing", 
+    category: "B2B",
+    thumbnail: "/ppc.jpg",
     link: "https://docs.google.com/file/d/1wwkNIK2lMtm-4yNoJtvgRSV_8CkcDZyO/edit?usp=docslist_api&filetype=msword"
   },
   {
     id: 4,
-    title: "Content Strategy Overview",
+    title: "7 Ways We Are Changing Our Summer Workout with Our Mindset ",
     category: "General Content",
-    thumbnail: "/placeholder.svg?height=200&width=300",
+    thumbnail: "/summer.jpg",
     link: "https://docs.google.com/document/d/1KbOlR4wZYylFo_IE47Wtf3ZU3kWabbcAkKpNqkYnK4Y/edit"
   }
 ];
@@ -53,7 +53,7 @@ function Portfolio() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-16">
         <section className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold text-[#44BBA4] mb-4">
-            My Portfolio
+           Welcome My Portfolio
           </h1>
           <p className="text-lg max-w-2xl mx-auto">
             Explore my diverse range of projects showcasing expertise in B2B and general content creation.
@@ -84,14 +84,18 @@ function Portfolio() {
           {filteredItems.map((item) => (
             <article
               key={item.id}
-              className={`rounded-xl overflow-hidden transition-all hover:-translate-y-1 ${
+              className={`rounded-xl overflow-hidden transition-all duration-500 ease-in-out transform hover:scale-105 hover:shadow-2xl ${
                 isDark ? 'bg-gray-800/50 ring-1 ring-gray-700/50' : 'bg-white shadow-xl'
               }`}
             >
               <img
                 src={item.thumbnail}
                 alt={item.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-105"
+                onError={(e) => {
+                  e.target.src = '/fallback-image.jpg';
+                  console.error(`Failed to load image: ${item.thumbnail}`);
+                }}
               />
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">

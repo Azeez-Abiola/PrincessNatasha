@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Trash, Sun, Moon, LogOut, ImageIcon } from 'lucide-react';
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ export default function Admin() {
   const [loadingText, setLoadingText] = useState("");
   const [isDark, setIsDark] = useState(false);
   const [title, setTitle] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
   const [category, setCategory] = useState("Freelance Resources");
   const [description, setDescription] = useState("");
   const [posts, setPosts] = useState([]);
@@ -22,7 +22,13 @@ export default function Admin() {
       try {
         const response = await fetch('https://princess-natasha-g1y8.vercel.app/fetch_posts');
         const data = await response.json();
-        setPosts(data);
+        const updatedPosts = data.map(post => ({
+          ...post,
+          thumbnail: post.thumbnail.startsWith('http') 
+            ? post.thumbnail 
+            : `https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`
+        }));
+        setPosts(updatedPosts);
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch posts");
@@ -51,14 +57,20 @@ export default function Admin() {
       if (!response.ok) throw new Error("Failed to create a post");
 
       const data = await response.json();
-      setPosts((prevPosts) => [...prevPosts, data]);
+      const newPost = {
+        ...data,
+        thumbnail: data.thumbnail.startsWith('http') 
+          ? data.thumbnail 
+          : `https://princess-natasha-g1y8.vercel.app/${data.thumbnail}`
+      };
+      setPosts((prevPosts) => [...prevPosts, newPost]);
       toast.success("Post added successfully!");
       
       // Reset form
       setTitle("");
       setDescription("");
       setCategory("Freelance Resources");
-      setThumbnail("");
+      setThumbnail(null);
     } catch (error) {
       console.error(error);
       toast.error("Failed to add post");
@@ -236,7 +248,7 @@ export default function Admin() {
                   }`}
                 >
                   <img
-                    src={`https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`}
+                    src={post.thumbnail}
                     alt={post.title}
                     className="w-full h-48 object-cover"
                     onContextMenu={(e) => e.preventDefault()}
