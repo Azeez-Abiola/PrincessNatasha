@@ -103,20 +103,39 @@ app.get("/fetch_posts/:id", async (req, res) => {
   }
 });
 
-app.put("/update_posts/:id", async (req, res) => {
+app.put('/update_posts/:id', upload.single('thumbnail'), async (req, res) => {
   const { id } = req.params;
-  const updatedPost = req.body;
-  try{
-    const docRef = db.collection("posts").doc(id);
-    const doc = await docRef.get();
-    if(!docRef.exists){
-      res.status(404).json({message: 'Post Not Found'});
+  const { title, description, category } = req.body;
+
+  try {
+    const updateData = {};
+    if (title) updateData.title = title;
+    if (description) updateData.description = description;
+    if (category) updateData.category = category;
+    if (req.file) {
+      const formData = new FormData();
+      formData.append("image", req.file.buffer.toString("base64"));
+      formData.append("key", process.env.IMGBB_API_KEY);
+
+      const imgbbResponse = await axios.post("https://api.imgbb.com/1/upload", formData, {
+        headers: formData.getHeaders(),
+      });
+
+      const { url } = imgbbResponse.data.data;
+      updateData.thumbnail = url;
     }
-    await docRef.update(updatedPost);
-    res.status(200).json({message: 'Post Update Successfully'})
-  }catch(error){
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ error: 'No fields to update.' });
+    }
+
+    const postRef = db.collection('posts').doc(id);
+    await postRef.update(updateData);
+
+    res.json({ message: 'Post updated successfully', updateData });
+  } catch (error) {
     console.error(error);
-    res.status(500).json({message: 'internal server error'});
+    res.status(500).json({ error: 'Failed to update post' });
   }
 });
 
