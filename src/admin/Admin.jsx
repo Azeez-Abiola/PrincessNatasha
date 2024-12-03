@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Trash, Sun, Moon, LogOut, ImageIcon } from 'lucide-react';
+import { Pencil, Plus, Trash, Sun, Moon, LogOut, ImageIcon } from "lucide-react";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Admin() {
   const [loading, setLoading] = useState(false);
@@ -15,18 +15,31 @@ export default function Admin() {
   const [category, setCategory] = useState("Freelance Resources");
   const [description, setDescription] = useState("");
   const [posts, setPosts] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editPostId, setEditPostId] = useState(null);
+
   const navigate = useNavigate();
 
+ // confirm the post update 
+ useEffect(() => {
+  const postUpdated = localStorage.getItem("postUpdated");
+  if (postUpdated === "true") {
+    toast.success("Post updated successfully!");
+    localStorage.removeItem("postUpdated"); 
+  }
+}, []);
+
+  // Fetch posts on component mount
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('https://princess-natasha-g1y8.vercel.app/fetch_posts');
+        const response = await fetch("https://princess-natasha-g1y8.vercel.app/fetch_posts");
         const data = await response.json();
-        const updatedPosts = data.map(post => ({
+        const updatedPosts = data.map((post) => ({
           ...post,
-          thumbnail: post.thumbnail.startsWith('http') 
-            ? post.thumbnail 
-            : `https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`
+          thumbnail: post.thumbnail.startsWith("http")
+            ? post.thumbnail
+            : `https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`,
         }));
         setPosts(updatedPosts);
       } catch (error) {
@@ -36,6 +49,16 @@ export default function Admin() {
     };
     fetchPosts();
   }, []);
+
+  // Function to clear form inputs
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setCategory("Freelance Resources");
+    setThumbnail(null);
+    setIsEditing(false);
+    setEditPostId(null);
+  };
 
   const handleUploadPost = async (event) => {
     event.preventDefault();
@@ -59,18 +82,13 @@ export default function Admin() {
       const data = await response.json();
       const newPost = {
         ...data,
-        thumbnail: data.thumbnail.startsWith('http') 
-          ? data.thumbnail 
-          : `https://princess-natasha-g1y8.vercel.app/${data.thumbnail}`
+        thumbnail: data.thumbnail.startsWith("http")
+          ? data.thumbnail
+          : `https://princess-natasha-g1y8.vercel.app/${data.thumbnail}`,
       };
       setPosts((prevPosts) => [...prevPosts, newPost]);
       toast.success("Post added successfully!");
-      
-      // Reset form
-      setTitle("");
-      setDescription("");
-      setCategory("Freelance Resources");
-      setThumbnail(null);
+      resetForm();
     } catch (error) {
       console.error(error);
       toast.error("Failed to add post");
@@ -79,21 +97,82 @@ export default function Admin() {
     }
   };
 
+  const handleEditClick = (post) => {
+    setTitle(post.title);
+    setDescription(post.description);
+    setCategory(post.category);
+    setThumbnail(post.thumbnail);
+    setIsEditing(true);
+    setEditPostId(post.id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleEditPost = async (event) => {
+    event.preventDefault();
+    if (!editPostId) return; 
+
+    setLoadingText("Updating post...");
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    if (thumbnail instanceof File) formData.append("thumbnail", thumbnail);
+
+    try {
+      const response = await fetch(
+        `https://princess-natasha-g1y8.vercel.app/update_posts/${editPostId}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update the post");
+
+      const updatedPost = await response.json();
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === editPostId
+            ? {
+                ...updatedPost,
+                thumbnail: updatedPost.thumbnail.startsWith("http")
+                  ? updatedPost.thumbnail
+                  : `https://princess-natasha-g1y8.vercel.app/${updatedPost.thumbnail}`,
+              }
+            : post
+        )
+      );
+       localStorage.setItem("postUpdated", "true");
+      window.location.reload()
+      resetForm();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update the post");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleDeletePost = async (id) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
-    
+
     setLoadingText("Deleting post...");
     setLoading(true);
-    
+
     try {
-      const response = await fetch(`https://princess-natasha-g1y8.vercel.app/fetch_posts/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://princess-natasha-g1y8.vercel.app/delete_posts/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to delete the post");
-      
+
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
-      toast.success('Post deleted successfully');
+      toast.success("Post deleted successfully");
     } catch (error) {
       console.error(error);
       toast.error("Failed to delete post");
@@ -102,6 +181,7 @@ export default function Admin() {
     }
   };
 
+ 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
       isDark ? 'bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100' : 'bg-gradient-to-b from-gray-50 to-white text-gray-900'
@@ -149,7 +229,7 @@ export default function Admin() {
           <h2 className="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             <span className="text-[#44BBA4]">Create New Post</span>
           </h2>
-          <form onSubmit={handleUploadPost} className="space-y-6">
+          <form onSubmit={isEditing ? handleEditPost : handleUploadPost} className="space-y-6">
             <div>
               <label className="block text-sm font-medium mb-2">Post Title</label>
               <input
@@ -181,6 +261,13 @@ export default function Admin() {
 
             <div>
               <label className="block text-sm font-medium mb-2">Thumbnail</label>
+              {thumbnail && (
+                <img
+                src={thumbnail}
+                alt="Current thumbnail"
+               className="h-20 w-20 object-cover rounded-lg"
+              />
+              )}
               <div className={`flex items-center gap-4 p-4 rounded-lg border-2 border-dashed ${
                 isDark ? 'border-gray-600' : 'border-gray-200'
               }`}>
@@ -203,15 +290,21 @@ export default function Admin() {
                   onChange={setDescription}
                   theme="snow"
                   className={isDark ? 'text-white' : 'text-gray-900'}
-                  modules={{
-                    toolbar: [
-                      [{ header: [1, 2, false] }],
-                      ['bold', 'italic', 'underline', 'strike'],
-                      [{ list: 'ordered' }, { list: 'bullet' }],
-                      ['link', 'image'],
-                      ['clean']
-                    ]
-                  }}
+                  modules={{toolbar: [
+                 [{ font: [] }], 
+                 [{ size: ['small', false, 'large', 'huge'] }], 
+                 [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                 ['bold', 'italic', 'underline', 'strike'], 
+                 [{ color: [] }, { background: [] }],
+                 [{ script: 'sub' }, { script: 'super' }], 
+                 [{ list: 'ordered' }, { list: 'bullet' }], 
+                 [{ indent: '-1' }, { indent: '+1' }],
+                 [{ align: [] }], 
+                 ['link', 'image', 'video'], 
+                 ['blockquote', 'code-block'], 
+                 ['clean'],
+                 ]
+                }}
                 />
               </div>
             </div>
@@ -221,8 +314,16 @@ export default function Admin() {
               disabled={loading}
               className="w-full py-2 px-4 rounded-lg bg-[#44BBA4] text-white font-medium hover:bg-[#3A9A8A] transition-opacity disabled:opacity-50"
             >
-              <Plus className="inline-block w-5 h-5 mr-2" />
-              Add New Post
+              {isEditing ? (
+                <span>Continue</span>
+               ):
+               (
+               <>
+               <Plus className="inline-block w-5 h-5 mr-2" />
+               Add New Posts
+              </>
+               )
+             }
             </button>
           </form>
         </div>
@@ -271,13 +372,25 @@ export default function Admin() {
                         __html: post.description.substring(0, 150) + '...'
                       }}
                     />
+                  
+                    <div className="w-full flex justify-between items-end">
                     <button
                       onClick={() => handleDeletePost(post.id)}
                       className="text-red-500 hover:text-red-600 transition-colors"
                       title="Delete Post"
                     >
-                      <Trash className="w-5 h-5" />
+                    <Trash className="w-5 h-5" />
                     </button>
+                    
+                    {/*edit post icon*/}
+                     <button
+                      onClick={() => handleEditClick(post)}
+                      className="text-blue-500 hover:text-blue-600 transition-colors"
+                      title="Edit Post"
+                    >
+                      <Pencil className="w-5 h-5" />
+                    </button>
+                    </div>
                   </div>
                 </article>
               ))}
@@ -290,7 +403,7 @@ export default function Admin() {
       {loading && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
-            <img src="/tube-spinner.svg" alt="Loading" className="w-16 h-16 mb-4" />
+            <img src="/tube-spinner (1).svg" alt="Loading" className="w-16 h-16 mb-4" />
             <p className="text-center">{loadingText}</p>
           </div>
         </div>

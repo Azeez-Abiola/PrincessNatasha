@@ -12,7 +12,7 @@ function Blog() {
   const [message, setMessage] = useState('');
   const [isDark, setIsDark] = useState(false);
   const [posts, setPosts] = useState([]);
-
+  const [searchInput, setSearchInput] = useState('');
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -55,6 +55,40 @@ function Blog() {
       toast.error('Failed to send message');
     }
   };
+ 
+const handleSearch = async (e) => {
+  const query = e.target.value;
+  setSearchInput(query); 
+
+  if (!query.trim()) {
+    // If the input is empty, fetch all posts
+    try {
+      const response = await fetch('https://princess-natasha-g1y8.vercel.app/fetch_posts');
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to fetch blog posts');
+    }
+    return;
+  }
+
+  // Search for a post dynamically
+  try {
+    const response = await fetch(`https://princess-natasha-g1y8.vercel.app/search_posts?query=${query}`);
+    if (!response.ok) {
+      throw new Error('Failed to search posts');
+    }
+    const data = await response.json();
+    setPosts(data);
+  } catch (error) {
+    console.error(error);
+    toast.error('Failed to search blog posts');
+  }
+};
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
@@ -69,6 +103,15 @@ function Blog() {
           <p className="text-lg max-w-2xl mx-auto">
             Here, creativity meets expertise to deliver engaging and insightful articles tailored to captivate you!
           </p>
+          
+          <div>
+            <input 
+            value={searchInput}
+            onChange={handleSearch}
+            placeholder="Search Stella's Articles Yourself"
+            type="search"
+            className={`${isDark ? 'bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100' : 'bg-white text-black'} border-2 mt-10 border-[#44BBA4] rounded w-full mx-auto block p-4`} />
+          </div>
         </section>
 
         {/* Blog Posts Grid */}
@@ -109,7 +152,7 @@ function Blog() {
                       isDark ? 'prose-invert' : ''
                     }`} dangerouslySetInnerHTML={{ __html: post.description }} />
                     <Link
-                      to={`/blog/${post._id}`}
+                      to={`/blog/${post.id}`}
                       className="inline-flex items-center text-[#44BBA4] hover:text-teal-700 font-medium"
                     >
                       Read More
