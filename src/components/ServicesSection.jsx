@@ -48,13 +48,13 @@ const ServicesSection = forwardRef((props, ref) => {
       icon: Pen,
       title: "Content Writing",
       description: "Craft compelling narratives that resonate with your audience and drive engagement.",
-      content: "Our content writing service goes beyond just putting words on a page. We delve deep into your brand's voice, your audience's needs, and the latest SEO trends to create content that not only reads well but performs exceptionally. From blog posts that establish your authority to product descriptions that convert, our team of skilled writers ensures every piece of content serves a strategic purpose in your overall marketing goals."
+      content: "Writing to connect with your audience or other businesses requires a certain level of expertise that not all writers are privileged to have (Sorry, not sorry). Thankfully, I've spent a lot of time building my skills, working with clients from across the globe, and gathering SEO knowledge/certificates like infinity stones. So, I know my onions, and it can be the secret to your sauce. "
     },
     {
       icon: Strategy,
       title: "Content Strategy",
       description: "Develop a comprehensive content plan that aligns with your business goals and resonates with your target audience.",
-      content: "A solid content strategy is the backbone of successful digital marketing. Our approach begins with a thorough analysis of your brand, audience, and competitors. We then craft a tailored strategy that outlines the types of content you need, the platforms to focus on, and the metrics to track. Our content strategy service ensures that every piece of content you publish is purposeful, targeted, and contributes to your overall business objectives."
+      content: "Want to hit those business goals but don't know where to start? Leave the dirty work to me. From audience identification and channel selection to brand tone and my fire content creation plan, when we are done, your content will be in tune with your target audience- perfectly curated to capture their attention at first sight."
     }
   ];
 
