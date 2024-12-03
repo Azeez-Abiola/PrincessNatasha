@@ -33,13 +33,13 @@ export default function Admin() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/fetch_posts");
+        const response = await fetch("https://princess-natasha-g1y8.vercel.app/fetch_posts");
         const data = await response.json();
         const updatedPosts = data.map((post) => ({
           ...post,
           thumbnail: post.thumbnail.startsWith("http")
             ? post.thumbnail
-            : `http://localhost:5000/${post.thumbnail}`,
+            : `https://princess-natasha-g1y8.vercel.app/${post.thumbnail}`,
         }));
         setPosts(updatedPosts);
       } catch (error) {
@@ -122,7 +122,7 @@ export default function Admin() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/update_posts/${editPostId}`,
+        `https://princess-natasha-g1y8.vercel.app/update_posts/${editPostId}`,
         {
           method: "PUT",
           body: formData,
@@ -139,7 +139,7 @@ export default function Admin() {
                 ...updatedPost,
                 thumbnail: updatedPost.thumbnail.startsWith("http")
                   ? updatedPost.thumbnail
-                  : `http://localhost:5000/${updatedPost.thumbnail}`,
+                  : `https://princess-natasha-g1y8.vercel.app/${updatedPost.thumbnail}`,
               }
             : post
         )
