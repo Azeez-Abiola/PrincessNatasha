@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Trash, Sun, Moon, LogOut, ImageIcon } from 'lucide-react';
+import { Plus, Trash, Sun, Moon, LogOut, ImageIcon, Pencil} from 'lucide-react';
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
@@ -78,7 +78,25 @@ export default function Admin() {
       setLoading(false);
     }
   };
+  
+  const handleEditPost = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:5000/update_posts/${id}`, {
+        method: "PUT",
+      });
 
+      if (!response.ok) throw new Error("Failed to update the post");
+      
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+      toast.success('Post Updated successfully');
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update post post");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   const handleDeletePost = async (id) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
     
@@ -86,7 +104,7 @@ export default function Admin() {
     setLoading(true);
     
     try {
-      const response = await fetch(`https://princess-natasha-g1y8.vercel.app/fetch_posts/${id}`, {
+      const response = await fetch(`https://princess-natasha-g1y8.vercel.app/delete_posts/${id}`, {
         method: "DELETE",
       });
 
@@ -203,15 +221,20 @@ export default function Admin() {
                   onChange={setDescription}
                   theme="snow"
                   className={isDark ? 'text-white' : 'text-gray-900'}
-                  modules={{
-                    toolbar: [
-                      [{ header: [1, 2, false] }],
-                      ['bold', 'italic', 'underline', 'strike'],
-                      [{ list: 'ordered' }, { list: 'bullet' }],
-                      ['link', 'image'],
-                      ['clean']
-                    ]
-                  }}
+                  modules={{toolbar: [
+                 [{ font: [] }], 
+                 [{ size: ['small', false, 'large', 'huge'] }], 
+                 [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                 ['bold', 'italic', 'underline', 'strike'], 
+                 [{ color: [] }, { background: [] }],
+                 [{ script: 'sub' }, { script: 'super' }], 
+                 [{ list: 'ordered' }, { list: 'bullet' }], 
+                 [{ indent: '-1' }, { indent: '+1' }],
+                 [{ align: [] }], 
+                 ['link', 'image', 'video'], 
+                 ['blockquote', 'code-block'], 
+                 ['clean'] 
+                 ]}}
                 />
               </div>
             </div>
@@ -271,13 +294,25 @@ export default function Admin() {
                         __html: post.description.substring(0, 150) + '...'
                       }}
                     />
+                  
+                    <div className="w-full flex justify-between items-end">
                     <button
                       onClick={() => handleDeletePost(post.id)}
                       className="text-red-500 hover:text-red-600 transition-colors"
                       title="Delete Post"
                     >
-                      <Trash className="w-5 h-5" />
+                    <Trash className="w-5 h-5" />
                     </button>
+                    
+                    {/*edit post icon*/}
+                     <button
+                      onClick={() => handleEditPost(post.id)}
+                      className="text-blue-500 hover:text-blue-600 transition-colors"
+                      title="Edit Post"
+                    >
+                      <Pencil className="w-5 h-5" />
+                    </button>
+                    </div>
                   </div>
                 </article>
               ))}
@@ -290,7 +325,7 @@ export default function Admin() {
       {loading && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
-            <img src="/tube-spinner.svg" alt="Loading" className="w-16 h-16 mb-4" />
+            <img src="/tube-spinner (1).svg" alt="Loading" className="w-16 h-16 mb-4" />
             <p className="text-center">{loadingText}</p>
           </div>
         </div>

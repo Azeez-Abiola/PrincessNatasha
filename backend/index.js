@@ -24,7 +24,7 @@ const db = getFirestore();
 const upload = multer({
   storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
-    const allowedFileTypes = /jpeg|jpg|png|gif/;
+    const allowedFileTypes = /jpeg|jpg|png|webp||gif/;
     const extname = allowedFileTypes.test(file.originalname.toLowerCase());
     const mimetype = allowedFileTypes.test(file.mimetype);
     if (extname && mimetype) {
@@ -88,7 +88,62 @@ app.get("/fetch_posts", async (req, res) => {
   }
 });
 
-app.delete("/fetch_posts/:id", async (req, res) => {
+app.get("/fetch_posts/:id", async (req, res) => {
+  const { id } =  req.params;
+  try{
+    const docRef = await db.collection("posts").doc(id).get();
+    if(!docRef.exists){
+      res.status(404).json({message: 'Post Not Found'});
+    }
+    const post = {...docRef.data()}
+    res.status(200).json(post);
+  }catch(error){
+    console.error(error);
+    res.status(500).json({message: 'internal server error'});
+  }
+});
+
+app.put("/update_posts/:id", async (req, res) => {
+  const { id } = req.params;
+  const updatedPost = req.body;
+  try{
+    const docRef = db.collection("posts").doc(id);
+    const doc = await docRef.get();
+    if(!docRef.exists){
+      res.status(404).json({message: 'Post Not Found'});
+    }
+    await docRef.update(updatedPost);
+    res.status(200).json({message: 'Post Update Successfully'})
+  }catch(error){
+    console.error(error);
+    res.status(500).json({message: 'internal server error'});
+  }
+});
+
+app.get("/search_posts", async (req, res) => {
+  const { query } = req.query;
+  try {
+    const snapshot = await db
+      .collection("posts")
+      .where("title", ">=", query)
+      .where("title", "<=", query + "\uf8ff")
+      .get();
+
+    const posts = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    if (posts.length === 0) {
+      return res.status(404).json({ message: "No Posts Found" });
+    }
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
+app.delete("/delete_posts/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const docRef = db.collection("posts").doc(id);

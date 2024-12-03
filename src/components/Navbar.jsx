@@ -89,7 +89,7 @@ export default function Navbar({ onScrollToServices }) {
             >
               <span className="sr-only">Open main menu</span>
               {isOpen ? (
-                <X className="block h-6 w-6" aria-hidden="true" />
+                <X className="block bg-white z-10 h-6 w-6" aria-hidden="true" />
               ) : (
                 <Menu className="block h-6 w-6" aria-hidden="true" />
               )}
