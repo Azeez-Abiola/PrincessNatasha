@@ -20,18 +20,11 @@ export default function Admin() {
 
   const navigate = useNavigate();
 
- // confirm the post update 
- useEffect(() => {
-  const postUpdated = localStorage.getItem("postUpdated");
-  if (postUpdated === "true") {
-    toast.success("Post updated successfully!");
-    localStorage.removeItem("postUpdated"); 
-  }
-}, []);
-
   // Fetch posts on component mount
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true)
+        setLoadingText('Fetching Posts...')
       try {
         const response = await fetch("https://princess-natasha-g1y8.vercel.app/fetch_posts");
         const data = await response.json();
@@ -45,6 +38,9 @@ export default function Admin() {
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch posts");
+      }
+      finally{
+        setLoading(false)
       }
     };
     fetchPosts();
@@ -129,9 +125,12 @@ export default function Admin() {
         }
       );
 
-      if (!response.ok) throw new Error("Failed to update the post");
-
-      const updatedPost = await response.json();
+      if (!response.ok) throw new Error("Failed to update the post")
+      const data = await response.json();
+      toast.success('Post Edited successfully');
+      resetForm()
+      setTimeout(() => {
+      const updatedPost = data;
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post.id === editPostId
@@ -144,9 +143,8 @@ export default function Admin() {
             : post
         )
       );
-       localStorage.setItem("postUpdated", "true");
-      window.location.reload()
-      resetForm();
+     window.location.reload()
+    }, 3000)
     } catch (error) {
       console.error(error);
       toast.error("Failed to update the post");
@@ -277,7 +275,7 @@ export default function Admin() {
                   onChange={(e) => setThumbnail(e.target.files[0])}
                   accept="image/*"
                   className="text-sm"
-                  required
+                  required={!isEditing}
                 />
               </div>
             </div>
