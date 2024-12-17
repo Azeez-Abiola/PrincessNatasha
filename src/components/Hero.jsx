@@ -8,7 +8,7 @@ export default function HeroSection() {
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
 
-  const words = ['Content Writer', 'Brand Strategist', 'Content Strategist'];
+  const words = ['Content Writer', 'Content Strategist'];
   const navigate = useNavigate();
   
   useEffect(() => {
