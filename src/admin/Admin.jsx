@@ -12,12 +12,13 @@ export default function Admin() {
   const [isDark, setIsDark] = useState(false);
   const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [category, setCategory] = useState("Freelance Resources");
   const [description, setDescription] = useState("");
   const [posts, setPosts] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editPostId, setEditPostId] = useState(null);
-
+ 
   const navigate = useNavigate();
 
   // Fetch posts on component mount
@@ -37,7 +38,7 @@ export default function Admin() {
         setPosts(updatedPosts);
       } catch (error) {
         console.error(error);
-        toast.error("Failed to fetch posts");
+        console.error(error)
       }
       finally{
         setLoading(false)
@@ -52,6 +53,7 @@ export default function Admin() {
     setDescription("");
     setCategory("Freelance Resources");
     setThumbnail(null);
+    setThumbnailPreview(null);
     setIsEditing(false);
     setEditPostId(null);
   };
@@ -76,6 +78,7 @@ export default function Admin() {
       if (!response.ok) throw new Error("Failed to create a post");
 
       const data = await response.json();
+      toast.success("Post added successfully!");
       const newPost = {
         ...data,
         thumbnail: data.thumbnail.startsWith("http")
@@ -83,8 +86,10 @@ export default function Admin() {
           : `https://princess-natasha-g1y8.vercel.app/${data.thumbnail}`,
       };
       setPosts((prevPosts) => [...prevPosts, newPost]);
-      toast.success("Post added successfully!");
-      resetForm();
+      resetForm()
+      setTimeout(() => {
+       window.location.reload()
+      }, 3000)
     } catch (error) {
       console.error(error);
       toast.error("Failed to add post");
@@ -97,7 +102,7 @@ export default function Admin() {
     setTitle(post.title);
     setDescription(post.description);
     setCategory(post.category);
-    setThumbnail(post.thumbnail);
+    setThumbnailPreview(post.thumbnail)
     setIsEditing(true);
     setEditPostId(post.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -171,6 +176,9 @@ export default function Admin() {
 
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
       toast.success("Post deleted successfully");
+      setTimeout(() => {
+       window.location.reload()
+      }, 3000)
     } catch (error) {
       console.error(error);
       toast.error("Failed to delete post");
@@ -259,9 +267,9 @@ export default function Admin() {
 
             <div>
               <label className="block text-sm font-medium mb-2">Thumbnail</label>
-              {thumbnail && (
+              {thumbnailPreview && (
                 <img
-                src={thumbnail}
+                src={thumbnailPreview}
                 alt="Current thumbnail"
                className="h-20 w-20 object-cover rounded-lg"
               />
@@ -272,7 +280,13 @@ export default function Admin() {
                 <ImageIcon className="w-6 h-6 text-gray-400" />
                 <input
                   type="file"
-                  onChange={(e) => setThumbnail(e.target.files[0])}
+                  onChange={(e) => {
+                  const file = e.target.files[0];
+                  if(file){
+                  setThumbnail(file)
+                  setThumbnailPreview(URL.createObjectURL(file));
+                  }
+                  }}
                   accept="image/*"
                   className="text-sm"
                   required={!isEditing}
@@ -355,7 +369,7 @@ export default function Admin() {
                   <div className="p-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-gray-500">
-                        {new Date(post.createdAt).toLocaleDateString()}
+                        {post.createdAt}
                       </span>
                       <span className={`px-3 py-1 rounded-full text-xs ${
                         isDark ? 'bg-gray-700' : 'bg-gray-100'

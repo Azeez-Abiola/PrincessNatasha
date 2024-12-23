@@ -83,7 +83,7 @@ function BlogPost() {
               {post.category}
             </span>
             <time className="text-sm text-gray-500">
-              {new Date(post.createdAt).toLocaleDateString()}
+              {post.createdAt}
             </time>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-8">{post.title}</h1>
