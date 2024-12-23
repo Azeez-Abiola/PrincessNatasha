@@ -3,7 +3,7 @@ const cors = require("cors");
 const multer = require("multer");
 const bodyParser = require("body-parser");
 const { initializeApp, cert } = require("firebase-admin/app");
-const { getFirestore } = require("firebase-admin/firestore");
+const { getFirestore, FieldValue } = require("firebase-admin/firestore");
 const axios = require("axios");
 const FormData = require("form-data")
 require("dotenv").config();
@@ -53,37 +53,45 @@ app.post("/new_post", upload.single("thumbnail"), async (req, res) => {
 
     const { url, delete_url } = imgbbResponse.data.data;
 
-    const currentDate = new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-
     const newPost = {
       title,
       description,
       category,
       thumbnail: url,
       deleteUrl: delete_url,
-      createdAt: currentDate,
+      createdAt: FieldValue.serverTimestamp(),
     };
 
     const docRef = await db.collection("posts").add(newPost);
     res.status(201).json({ id: docRef.id, ...newPost });
   } catch (error) {
+    console.error(error)
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
 app.get("/fetch_posts", async (req, res) => {
   try {
-    const snapshot = await db.collection("posts").get();
-    const posts = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const snapshot = await db.collection("posts").orderBy("createdAt", "desc").get();const posts = snapshot.docs.map((doc) => {
+      const data = doc.data(); 
+      const formattedDate = data.createdAt 
+        ? new Intl.DateTimeFormat("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }).format(data.createdAt.toDate())
+        : null;
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: formattedDate, 
+      };
+    });
+
     res.status(200).json(posts);
+    console.log(posts)
   } catch (error) {
+    console.error(error)
     res.status(400).json({ message: "No Post Available" });
   }
 });
@@ -109,6 +117,7 @@ app.put('/update_posts/:id', upload.single('thumbnail'), async (req, res) => {
 
   try {
     const updateData = {};
+    updateData.createdAt = FieldValue.serverTimestamp();
     if (title) updateData.title = title;
     if (description) updateData.description = description;
     if (category) updateData.category = category;
@@ -182,6 +191,7 @@ app.delete("/delete_posts/:id", async (req, res) => {
 
     res.status(200).json({ message: "Post and image deleted successfully" });
   } catch (error) {
+    console.error(error)
     res.status(500).json({ message: "Failed to delete post and image" });
   }
 });

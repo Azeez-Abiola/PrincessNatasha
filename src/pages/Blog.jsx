@@ -24,7 +24,6 @@ function Blog() {
         setPosts(data);
       } catch (error) {
         console.error(error);
-        toast.error('Failed to fetch blog posts');
       }
     };
     fetchPosts();
@@ -71,7 +70,6 @@ const handleSearch = async (e) => {
       setPosts(data);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to fetch blog posts');
     }
     return;
   }
@@ -86,7 +84,6 @@ const handleSearch = async (e) => {
     setPosts(data);
   } catch (error) {
     console.error(error);
-    toast.error('Failed to search blog posts');
   }
 };
 
@@ -144,7 +141,8 @@ const handleSearch = async (e) => {
                         {post.category}
                       </span>
                       <time className="text-sm text-gray-500">
-                        {new Date(post.createdAt).toLocaleDateString()}
+                        {post.createdAt}
+                 
                       </time>
                     </div>
                     <h3 className="text-xl font-bold mb-2">{post.title}</h3>
